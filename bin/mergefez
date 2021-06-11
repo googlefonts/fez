@@ -13,8 +13,8 @@ parser.add_argument(
     "feature",
     default="-",
     nargs="?",
-    help="FEE file(s) to add",
-    metavar="FEE",
+    help="FEZ file(s) to add",
+    metavar="FEZ",
 )
 
 parser.add_argument(
@@ -38,7 +38,7 @@ font = TTFont(args.input, fontNumber=args.index)
 p = FezParser(args.input)
 # Unparse existing features
 p.fea = unparse(font)
-# Add features from FEE
+# Add features from FEZ
 p.parseFile(args.feature)
 
 # Send it back to fea

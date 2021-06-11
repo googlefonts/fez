@@ -17,7 +17,7 @@ parser.add_argument('-O', nargs='?', const=1, type=int, default=0,
 parser.add_argument("--master",
                     help="Master name for .glyphs fonts", metavar="MASTER")
 parser.add_argument("-c",
-                    help="FEE string to execute")
+                    help="FEZ string to execute")
 
 parser.add_argument("--omit-gdef", action='store_false', dest='do_gdef',
                     help="Don't add a GDEF table to output")
@@ -25,7 +25,7 @@ parser.add_argument("font",
                     help="Font file (.otf/.glyphs) to process", metavar="FONT")
 
 parser.add_argument("fee",
-                    help="FEE file to process", metavar="FEE", nargs='?')
+                    help="FEZ file to process", metavar="FEZ", nargs='?')
 
 args = parser.parse_args()
 
