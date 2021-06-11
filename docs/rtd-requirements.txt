@@ -1,0 +1,7 @@
+glyphtools>=0.7.0
+fontTools
+beziers>=0.1.0
+lark
+more_itertools
+git+git://github.com/simoncozens/babelfont.git@nfsf#egg=babelfont
+fontfeatures>=1.0.7
