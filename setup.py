@@ -14,7 +14,7 @@ if os.path.isfile(requirementPath):
 scripts = glob.glob("bin/*")
 
 config = {
-    'name': 'fez',
+    'name': 'fez-language',
     'author': 'Simon Cozens',
     'author_email': 'simon@simon-cozens.org',
     'url': 'https://github.com/simoncozens/fez',
