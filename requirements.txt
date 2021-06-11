@@ -4,4 +4,4 @@ beziers>=0.1.0
 lark
 more_itertools
 babelfont==3.0.0a1
-fontfeatures>=1.0.6
+fontfeatures>=1.0.7
