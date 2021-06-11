@@ -32,8 +32,8 @@ config = {
         "Development Status :: 4 - Beta"
 
     ],
-    'package_dir': {'fez': 'lib/fez'},
-    'packages': find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"])
+    'package_dir': {'': 'lib'},
+    'packages': find_packages('lib')
 ,
     'scripts': scripts,
     'zip_safe': False
