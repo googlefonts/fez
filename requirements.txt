@@ -3,5 +3,5 @@ fontTools
 beziers>=0.1.0
 lark
 more_itertools
-babelfont==3.0.0a1
+babelfont==3.0.0a2
 fontfeatures>=1.0.7
