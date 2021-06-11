@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="149.11mm" height="116.12mm" version="1.1" viewBox="0 0 149.11 116.12" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<filter id="n" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="j" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="h" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="m" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="g" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="d" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" result="fbSourceGraphic" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+<feColorMatrix in="fbSourceGraphic" result="fbSourceGraphicAlpha" values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"/>
+<feTurbulence baseFrequency="0.313469 0.469703" result="turbulence" seed="92"/>
+<feDisplacementMap in="fbSourceGraphic" in2="turbulence" scale="2.09581" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="a" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="k" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="i" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="e" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="l" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="f" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="0.02" numOctaves="7" result="result0" seed="55" type="fractalNoise"/>
+<feDiffuseLighting in="result0" kernelUnitLength="1" result="result1" surfaceScale="4">
+<feDistantLight azimuth="235" elevation="60"/>
+</feDiffuseLighting>
+<feSpecularLighting in="result0" kernelUnitLength="1" result="result3" specularExponent="25" surfaceScale="3">
+<feDistantLight azimuth="235" elevation="55"/>
+</feSpecularLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1" operator="arithmetic" result="result2"/>
+<feComposite in="result2" in2="result3" k2="1" k3="1" operator="arithmetic" result="result4"/>
+<feComposite in="result4" in2="SourceAlpha" operator="in" result="fbSourceGraphic"/>
+<feDisplacementMap in2="result0" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<linearGradient id="b" x1="-222.13" x2="275.44" y1="206.77" y2="206.77" gradientTransform="translate(-16.998 7.4815)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6e0f13" offset="0"/>
+<stop stop-color="#772732" offset=".65001"/>
+<stop stop-color="#ab3444" offset="1"/>
+</linearGradient>
+<filter id="o" color-interpolation-filters="sRGB">
+<feFlood flood-color="rgb(0,0,0)" flood-opacity=".49804" result="flood"/>
+<feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+<feGaussianBlur in="composite1" result="blur" stdDeviation="3"/>
+<feOffset dx="2.99401" dy="21.8563" result="offset"/>
+<feComposite in="SourceGraphic" in2="offset" result="fbSourceGraphic"/>
+<feColorMatrix in="fbSourceGraphic" result="fbSourceGraphicAlpha" values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"/>
+<feTurbulence baseFrequency="1" numOctaves="5" result="result0" type="fractalNoise"/>
+<feConvolveMatrix kernelMatrix="-2 0 0 0 -2 0 -2 0 -2 0 0 0 -10 0 0 0 -2 0 -2 0 -2 0 0 0 -2 " order="5 5" result="result5" targetX="2" targetY="2"/>
+<feComposite in="result5" in2="fbSourceGraphic" k1="1.5" k2="0.5" k3="0.5" operator="arithmetic" result="result2"/>
+<feColorMatrix in="result2" result="result2" type="luminanceToAlpha"/>
+<feDiffuseLighting diffuseConstant="0.60000002" result="result1" surfaceScale="5">
+<feDistantLight azimuth="225" elevation="35"/>
+</feDiffuseLighting>
+<feComposite in="result1" in2="fbSourceGraphic" k1="1.5" k3="0.5" operator="arithmetic" result="result3"/>
+<feBlend in="result3" in2="result1" result="result6"/>
+<feComposite in2="fbSourceGraphic" operator="in"/>
+</filter>
+<filter id="c" color-interpolation-filters="sRGB">
+<feTurbulence baseFrequency="1" numOctaves="5" result="result0" type="fractalNoise"/>
+<feConvolveMatrix kernelMatrix="-2 0 0 0 -2 0 -2 0 -2 0 0 0 -10 0 0 0 -2 0 -2 0 -2 0 0 0 -2 " order="5 5" result="result5" targetX="2" targetY="2"/>
+<feComposite in="result5" in2="SourceGraphic" k1="1.5" k2="0.5" k3="0.5" operator="arithmetic" result="result2"/>
+<feColorMatrix in="result2" result="result2" type="luminanceToAlpha"/>
+<feDiffuseLighting diffuseConstant="0.60000002" result="result1" surfaceScale="5">
+<feDistantLight azimuth="225" elevation="35"/>
+</feDiffuseLighting>
+<feComposite in="result1" in2="SourceGraphic" k1="1.5" k3="0.5" operator="arithmetic" result="result3"/>
+<feBlend in="result3" in2="result1" result="result6"/>
+<feComposite in2="SourceGraphic" operator="in"/>
+</filter>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(64.907 -171.3)" stroke="#000">
+<path transform="matrix(.25 0 0 .25 7.2367 172.18)" d="m-238.87 301.55s36.664 69.548 136.83 82.399c73.078 9.8838 319.19 2.6425 360.21-52.539-2.2678-7.5595-50.908-237.25-50.908-237.25s-9.19-39.811-17.128-53.04c-10.583 23.812-148.92 44.223-192.77 51.405-43.845 7.1816-167.82-2.2678-180.67-31.75-19.502 69.031-49.655 157.18-55.562 240.77z" fill="url(#b)" filter="url(#o)" stroke-width=".5"/>
+<path transform="matrix(.5 0 0 .5 4.8245 114.68)" d="m-86.565 146.18s14.901 18.567 79.564 17.198c46.076-0.97558 106.06-13.355 107.16-27.025-8.8824-7.3705-53.295-16.631-83.911-18.143-30.616-1.5119-72.004 0.94494-88.068 11.528-12.31 8.1099-14.741 16.442-14.741 16.442z" fill="#992f3e" filter="url(#c)" stroke-width="1.0325"/>
+</g>
+<g transform="matrix(.25 0 0 .21593 128.11 46.547)" fill="none" stroke="#000" stroke-width="2.2754">
+<path d="m-255.94-157.19c-18.353-1.096-11.882-17.464-19.161-10.368-0.754-4.186-22.822-5.822-18.106 3.986-10.745 5.608-8.583-3.584-15.445 5.649-11.699-0.792 5.965 0.563-1.949 6.283-2.292 6.886-10.592-16.806-16.824-9.628-6.651-7.175-11.967-5.393-12.735 3.151-19.592-3.487-22.13 9.821-37.853 11.11-12.021 3.013-26.11 11.712-29.148 7.724 0.248 1.442 0.4 9.012-8.967 0.65-13.145 7.479 13.583-2.447 3.655 11.528-2.364 18.447-8.864 25.565-4.549 31.021-10.005 16.271-20.346 2.7833-19.013 2.176-1.687 15.543-13.998 57.304-12.276 64.54-1.724 7.7669 4.155 19.343-4.225 26.039-6.896 14.809 4.624 1.1255-0.88 8.9612-5.576 53.439 6.511-26.257-4.317 49.678-13.178 59.516-11.064-5.6745-2.225 33.908-6.879 8.2293 11.354 46.704 8.572 56.396-8.23 5.089-0.108 9.8-0.385 29.315 6.558 11.934 20.55 6.119 28.175 6.139 3.689 9.804 10.314-9.711 22.327-5.011 5.105-5.334 31.33 28.73 39.388 22.473 16.001-4.008 12.264-3.785 26.192-10.604 17.516 7.236 40.343 19.498 52.126 24.753 6.497 12.858-15.539 20.347-15.037 17.145-5.754 6.123-25.903-0.083-24.709 2.094-2.003 10.017-5.948 9.855-17.301 1.76" filter="url(#a)"/>
+<path d="m-252.05-154.06c-26.288 16.966-46.494 3.134-66.781 7.379-12.374 5.748-3.495-21.654-15.321-11.696-13.257 2.138-8.319 16.981-21.857 9.352-11.294 9.201-0.168 7.534-14.95 11.115-12.869 14.267-31.005 5.448-34.173 11.422-5.6 11.931-8.19 0.969-15.261 8.135 5.012 4.835-5.506-7.928-2.682 3.313-29.671 63.206-2.573-1.219-10.726 51.143-8.74 36.52-0.777 16.76-23.143 71.932-8.054 2.561 12.069 24.326 6.206 33.026 1.28 20.298 8.971 42.772 3.906 52.014-6.353 5.843-16.455 2.5492-15.462 20.201 11.64 10.711 10.306 0.094 18.492 17.187 9.865 12.518 6.368 14.2-7.124 8.906 2.879-1.365 7.664 5.442 0.215 8.448 5.78 0.789 5.619-16.956 6.796-7.456 4.751 9.054 13.35 17.6 22.15 17.252 12.55 12.514 16.342 6.53 34.394 15.524 6.215 1.594 12.347-3.043 15.157 7.822 14.894 9.309 45.327 11.616 49.832 24.636 14.826 5.005 6.118 3.577 5.859 5.284-9.453 20.918-24.846-0.485-52.091 1.526" filter="url(#a)"/>
+<path d="m-246.54-151.88c-27.145-1.686-48.746 5.652-66.043 4.111-16.922 0.065-21.305-13.256-21.216-6.476-6.064 5.962-23.287 13.809-30.292 10.948 7.802 5.462-0.898-1.93-1.177-6.742-4.277 10.431-29.189 17.854-32.249 19.562-2.772-5.382-2.865-1.093-5.865-4.466 0.623-0.879-21.876 9.549-16.665 26.009 6.259 2.482-5.38 27.157 1.341 28.638-3.126 4.8501-20.923 27.163-21.35 30.766-5.23 3.368-8.933 19.387-3.624 32.892 0.768-0.5519 10.617 16.095 6.516 13.986-1.859 59.097-0.389-11.295-3.896 46.525-5.522 23.182-12.713 19.91-1.269 57.52 8.207 31.579 10.506-6.4533 8.459 21.069-4.694 7.256-4.09 10.239 4.699 21.8 6.612-4.935 4.215-12.47-1.42-2.645 12.098 17.476 30.678 28.588 49.055 40.499 10.536 11.21 27.754 6.282 44.157 16.856 16.898-2.77 17.825 27.731 37.562 26.71" filter="url(#a)"/>
+<path d="m-245.23-168.06c-29.38 13.037-57.245 15.986-88.613 16.362-2.376-2.712-1.319 18.518-9.853 10.589-6.129 1.626 6.659-1.876-0.198-6.782-9.507 7.579 4.777-10.874 9.121-1.472-5.964-8.667-11.715 1.233-22.406 7.578-4.142-2.523-20.502 11.278-29.675 16.73-6.057-4.944-3.108-3.323-6.666-2.387-11.093 0.719-14.11 4.182-27.811 19.34-1.001-3.205-0.072 13.288 3.86 18.723-12.418 67.348 2.035-13.932-14.481 27.666-4.523 49.779 0.349 8.1715-6.004 64.83 0.327 41.769-6.813 45.94-6.691 74.496 0.03 11.374 11.522 6.1249 8.658 24.824 15.99 38.131 36.067 24.632 58.304 50.465 15.514 21.872 2.771 9.724 26.921 21.331 7.113 13.849 12.382 15.337 22.805 29.063 5.778 1.196 17.014 16.486 12.331 15.204 3.465-3.001-15.216-14.871-14.232-5.18-0.926-3.975-21.328 1.119-11.787 3.741" filter="url(#a)"/>
+<path d="m-257.73-167.18c-68.302 9.99-0.699 2.828-46.548 14.873 5.218-6.37-9.935 0.888-20.846-3.37-7.244 8.761-10.719-11.131-20.242-1.239-14.408 14.353-12.243 29.102-31.988 37.634 4.654 3.732-27.623 6.834-34.233 12.29-1.932 13.494 3.088 32.456-0.338 37.87 4.741 18.999-5.919 35.683-10.244 39.201-4.712 10.307 5.375 8.1702-0.193 24.324-4.191 12.541-3.778 35.341-11.892 48.004-8.052 19.831 1.21 8.0096-8.306 32.051-8.019 4.5404 13.716-7.5735 4.064-0.8732-8.073 6.8656 9.543 23.08 13.07 30.426 6.605 6.579-4.685 29.356 7.645 36.352 10.287 35.929-0.095 14.555 23.049 36.767 9.955 6.913 0.833 10.425 16.211 14.307 47.574 25.428 8.947 15.002 43.605 23.768" filter="url(#a)"/>
+<path d="m-252.9-149.97c-23.991 12.248-25.745 1.322-47.962 7.757-12.13 9.416-6.73 3.045-12.377-4.148-5.497 8.739-10.709 5.752-16.734 5.402-4.176 6.323-19.415-9.722-18.481-9.134-13.907-0.722-18.653 8.016-19.522 8.415-1.844-6.446-1.276-7.141-12.06-0.464-6.595 6.714-17.524 20.399-27.585 27.66 2.821 23.651-5.841 13.614-9.972 36.92 3.595 10.417 14.967 19.026 7.815 16.866-1.411 0.8638-18.653 39.023-14.647 53.467 1.745 17.276 3.901 24.228-0.68 44.671-6.932 0.6405-4.044 7.6597-0.896 23.095 10.724 19.409 0.296 29.289 4.396 51.897-6.047-0.322 7.514 28.633 0.233 24.769 13.701 39.526 48.927 48.381 72.051 72.96 4.093-3.311 2.433-10.274 6.654-0.088-13.953-2.395-16.478 4.15-30.411 8.393 4.827 6.762 1.008-2.958 5.89 3.937" filter="url(#a)"/>
+<path d="m-245.99-156.68c-43.833 17.486 10.221 1.312-93.504 26.538-17.446-2.446-18.94-4.439-34.164 2.189 0.165 4.719-12.25 6.413-17.412 21.721-1.706 4.478-23.307 20.145-31.88 30.038-14.815 14.311 2.888 42.53-6.683 62.153-0.252 10.981-10.305 18.592-8.212 42.716-10.226 9.9237-0.896 29.836 1.454 32.4 3.705 3.0491-2.308 5.6244-0.232 19.653-4.072 6.6516-10.207 21.762-4.254 38.824 1.17 10.706 2.741 24.936-5.086 29.198-11.343 4.931-3.926 3.555-8.005 3.347 8.715 36.761 64.505 23.67 83.316 30.477 3.423 8.249 28.637 21.055 31.779 21.998-0.289-2.673-4.809 13.348-1.829 10.088-8.077-3.032-15.709 2.754-32.965-1.26" filter="url(#a)"/>
+<path d="m-242.64-155.02c-36.266 3.482-63.95 16.815-101.17 14.423-3.157 2.073-10.286 7.829-26.276 3.005 1.271-3.373 20.041 8.733 10.426 8.8-21.197 19.331-10.773-7.901-35.415 9.563 0.606 9.19 0.167 6.256-3.083 16.905-16.155 42.286-5.87-0.688-14.897 41.044-10.264 9.5285-6.034 16.947-7.157 17.201 2.665 4.315 23.154 18.912 13.627 22.247 1.92 18.701-7.257 27.351-9.241 51.937-4.675 12.437-6.682 11.747-7.748 38.375-3.072-5.2719-17.761 3.1286-8.235 13.895 10.224 13.657 20.456 26.512 28.765 43.717 0.846-0.072-0.904 5.249 10.595 16.99 1.308 6.769 13.388 11.559 15.026 28.038-7.138 6.34-2.064 20.466-2.01 20.154 4.424-0.762 28.971 1.558 23.876 1.702 19.157-0.379 25.106-12.663 16.224 0.626" filter="url(#a)"/>
+<path d="m-261.6-164.77c-78.857 11.512-62.457 29.823-95.89 24.463 3.119-5.878-10.154-10.445-12.92-2.804 6.093 1.922-5.47-9.015-2.394-1.748-7.307 25.625-14.141 17.33-34.916 42.039-10.76 21.149-14.406 13.142-13.763 34.505-6.676 29.514 16.595 3.8928 13.05 25.492 4.8 9.0468-5.766 11.523-9.444 24.076 8.228 0.559-10.616 20.522-5.595 36.532-6.938 16.797 10.779 4.9088 7.607 9.3465 7.302 22.128-8.931 29.87 1.624 52.961 7.629 15.995 7.271 13.374 0.507 22.891-0.758 4.683 2.255 27.42-0.167 34.31 5.381 53.379 0.981 22.19 25.609 48.322 3.701 8.758 6.479-4.802 14.712 7.947 5.916 11.103 4.008 21.924 9.577 18.61" filter="url(#a)"/>
+<path d="m-254.86-165.39c-29.053 8.57-61.318 3.315-78.647 18.018-12.868-1.171 5.843 9.807-2.763 10.248 2.135 1.986-11.498 4.33-23.721 11-16.436-3.652-21.926 10.471-34.14 12.654-12.779 4.215-1.786-1.679 4.748 17.932-3.075 7.8908-13.65 30.006-5.409 33.222-11.113 54.541 1.95-28.898-14.454 54.109-8.675 3.696-0.413-1.1445-4.978 11.229-0.751 13.575 3.747 86.196 7.644 103.11 13.808 57.319 28.67-1.611 37.581 58.95-7.612 12.057 5.181 7.17-4.115 9.004-5.689 9.358-1.512 9.893-5.42 22.35 0.923 8.829-1.326-15.245-3.335-4.093 8.84 4.251 14.031 0.446 15.082 5.293-1.709 6.775-8.307-8.848-13.742-0.522" filter="url(#a)"/>
+<path d="m-266.41-164.41c-14.933-2.418-1.547 14.155-11.155 11.181-4.098 3.999-13.565-4.497-23.325-2.297-12.332 9.266-5.815 16.283-15.812 14.856-8.959-2.493-9.369-0.577-21.668-9.623-0.947-5.133-12.877 1.189-6.568 8.737-7.09-7.521-5.627 12.417-14.344 10.132-8.305 11.753-15.048 16.273-33.374 27.481-7.74-0.289-16.732 21.152-20.457 41.65 7.469 12.725 13.723-4.92 12.858 6.9786-3.822 5.2362-11.178 34.412-12.409 44.12-12.326 20.571 0.57 38.452-2.986 55.936 9.854 2.6154-2.276 20.744-0.806 34.83 9.109 8.0567 6.195 1.7626 5.343 18.854-4.126 6.6312-4.726 28.174-7.462 30.404 5.577-1.524 10.02 10.685 7.785 15.842-1.999 18.555 22.602 23.608 26.612 26.026 1.114 6.444 4.49-2.239 17.002 4.27 12.606 12.388 51.549 33.121 36.059 46.765-1.252 1.562-31.292 17.545-48.176 19.888" filter="url(#a)"/>
+<path d="m-247.72-159.8c-24.215 9.351-40.991 8.831-58.476 2.013 1.105 0.311-29.438 5.482-30.675 12.679-22.288 8.188 1.427-6.43-16.89-9.387 5.089-3.38 0.028 14.224-9.855 14.313-4.657-5.41-23.913-8.373-20.04 4.777 2.527 8.23 7.475-10.242-3.92-3.484-16.079 10.096-39.12 38.395-53.833 69.24 1.177 17.283 17.602 19.684 9.844 38.391 4.453 19.753-6.076 21.696-17.33 24.549 8.736 7.7966 6.848 58.995-0.313 67.646 0.023 16.692-1.466 22.076 2.666 36.517 2.937 15.35-0.799 12.838-2.48 16.6-2.352 20.321 8.127 36.845 33.251 61.473 10.286 16.823-4.809-12.591 11.227-2.153 81.858 10.305-10.121-4.453 43.798 16.733 16.61 7.846 26.151 2.452 33.785 9.364-4.616 4.663 18.052 10.985 22.883 13.878-1.275-7.493 8.167 4.568-0.276-1.587-18.253-2.913-34.923 13.83-59.655 12.649" filter="url(#a)"/>
+</g>
+<g transform="matrix(.25 0 0 .25 76.142 2.3459)" fill="none" stroke="#000" stroke-linecap="round">
+<path d="m-86.863 30.201c4.1607 5.8572 3.7418 10.978 3.7418 17.64" filter="url(#n)" stroke-linejoin="round" stroke-width="3.2491"/>
+<path d="m-76.974 31.141c0.75726 4.8968 1.5145 9.7936 2.2718 14.69-0.04455 0.09068-0.0632 0.20035-0.13364 0.27204-0.08654 0.08809-0.28212-0.13602-0.4009-0.13602" filter="url(#j)" stroke-width="3.2491"/>
+<path d="m-72.43 29.801c0.03195 1.8669 2.7665 13.309 1.0691 16.704" filter="url(#h)" stroke-linejoin="round" stroke-width="3.2491" style="paint-order:stroke fill markers"/>
+<path d="m-82.726 29.934c4.1607 5.8572 3.7418 10.978 3.7418 17.64" filter="url(#m)" stroke-linejoin="round" stroke-width="3.2491"/>
+<path transform="matrix(1.0568 0 0 .78304 3.8688 7.4901)" d="m-68.966 29.867c0.03195 1.8669 2.7665 13.309 1.0691 16.704" filter="url(#g)" stroke-linejoin="round" stroke-width="3.5717" style="paint-order:stroke fill markers"/>
+</g>
+<g transform="matrix(.25 0 0 .24298 72.022 3.2443)" fill="none" filter="url(#d)" stroke="#000" stroke-width="2.2754">
+<path d="m-14.967 33.141c-10.867 0.10112-21.743-0.33949-32.607 0-3.0485 0.09526-6.0381 1.1417-9.0872 1.0691-4.4852-0.10679-8.877-1.6036-13.363-1.6036-4.8405 0-9.5955 1.4211-14.433 1.6036-4.6328 0.17482-9.2635-0.6565-13.898-0.53454-2.1669 0.05702-4.2686 0.76253-6.4145 1.0691-11.354 1.622-31.427 3.6837-40.09 5.8799-3.2316 0.81929-25.612 14.684-26.727 15.502-1.236 0.90642-1.6688 2.5835-2.6727 3.7418-3.6344 4.1936-8.3363 7.5564-11.225 12.294-11.26 18.466 1.6851 3.1028-2.1382 13.898-2.5854 7.2999-6.8413 13.97-9.0872 21.382-4.149 13.692-8.9985 41.43-10.691 56.661-0.67016 6.0315-0.77578 12.113-1.0691 18.174-0.24128 4.9864 0.47691 10.078-0.53454 14.967-10.192 49.263-2.1628-27.948-13.898 41.16-8.4501 49.762 0.84334 14.375 0 48.108-0.17956 7.1822-4.1257 33.508-3.7418 43.298 0.50339 12.836 7.5488 19.309 17.105 28.865 4.4097 4.4097 9.1038 9.101 14.967 11.225 6.901 2.5004 14.739 0.6002 21.916 2.1382 12.851 2.7539 25.018 8.3583 37.952 10.691 8.9498 1.6139 18.25-0.15574 27.261 1.0691 7.8626 1.0687 44.181 10.198 52.385 13.898 6.4805 2.9226 0.30083 13.239-7.4835 16.036-7.5531 2.7144-16.04 0.62998-24.054 1.0691-4.9943 0.27366-9.9781 0.71273-14.967 1.0691"/>
+<path d="m-25.123 28.865c-22.094 7.5648-44.125 7.4835-66.817 7.4835-5.1394 0-10.406-0.31476-15.502 0.53454-4.1368 0.68946-8.2048 1.7432-12.294 2.6727-7.6706 1.7433-15.596 2.6492-22.985 5.3454-20.728 7.5629-11.809 6.6025-24.589 17.64-4.9086 4.2393-10.696 7.4045-15.502 11.76-2.0494 1.8573-2.2217 9.3755-2.6727 10.691-22.55 65.77-7.2879 3.0819-11.225 48.643-3.547 41.044-5.0608 11.52-17.64 58.799-3.1577 11.869-1.8005 34.714-2.1382 47.039-0.31524 11.506-1.6774 24.575-3.7418 35.814-2.0391 11.102-10.797 22.53-6.949 33.141 3.3031 9.1087 21.165 6.4378 24.589 15.502 2.0856 5.5207-10.378 5.6247-15.502 8.5526-0.1547 0.0884 0.37983-0.0884 0.53454 0 3.6083 2.0619 7.1272 4.2763 10.691 6.4144 6.2363 3.7418 12.02 8.3695 18.709 11.225 9.277 3.961 19.243 6.0581 28.865 9.0872 9.7999 3.5636 19.823 6.5653 29.4 10.691 13.614 5.8644 27.357 11.655 40.09 19.243 5.088 3.0322 16.77 7.8728 12.829 12.294-15.944 17.889-37.047 11.999-55.592 9.6217"/>
+<path d="m-14.967 33.141c-20.312 1.2473-40.624 2.518-60.937 3.7418-9.264 0.55807-18.557 0.72961-27.796 1.6036-12.557 1.1878-9.0719 1.9646-19.243 4.2763-1.4008 0.31836-2.8934 0.1456-4.2763 0.53454-6.5373 1.8386-20.184 6.8115-26.192 9.6217-6.713 3.14-13.939 5.5916-19.778 10.156-4.6842 3.6622-13.86 18.579-14.967 25.123-1.249 7.3807 0.83627 15.092-0.53454 22.451-2.044 10.973-7.0093 21.221-9.6217 32.072-1.5426 6.4076-5.5336 31.637-5.8799 41.16-0.16847 4.633 1.1018 9.2968 0.53454 13.898-7.835 63.55-4.5076-9.6235-5.3454 46.505-0.35315 23.661-2.1244 13.815 1.0691 47.574 2.1031 22.233 2.0748-9.2681 5.8799 12.294 1.2711 7.2028 0.27384 14.645 1.0691 21.916 0.45598 4.169-0.1399 9.1835 2.6727 12.294 12.513 13.84 34.332 29.839 52.919 37.418 11.322 4.6167 23.665 6.5892 34.745 11.76 13.098 6.1126 24.945 14.611 37.418 21.916"/>
+<path d="m-14.967 33.141c-28.152 3.3854-56.305 6.7708-84.457 10.156-0.71272 0-1.462-0.22538-2.1382 0-0.4781 0.15937-0.71272 0.71272-1.0691 1.0691-1.7818 0.53454-3.489 1.4838-5.3454 1.6036-1.406 0.09071-15.445-1.2746-17.64 0-3.1947 1.855-23.222 14.206-27.261 17.64-3.5532 3.0202-6.2313 6.9542-9.6217 10.156-6.2394 5.8928-13.592 10.646-19.243 17.105-2.005 2.2914-2.5726 5.5748-3.2072 8.5526-15.566 73.042 2.2372-4.9949-4.8108 35.28-8.925 51-5.1137 12.19-10.156 66.817-3.683 39.899-3.2855 26.548-0.53454 64.145 0.87361 11.939-1.7402 24.686 2.6727 35.814 11.163 28.15 26.549 24.213 45.436 42.229 23.915 22.811-3.4171 13.322 28.331 28.865 10.996 5.3833 23.882 6.7907 34.21 13.364 5.0145 3.191 11.615 15.848 2.1382 19.778-5.3079 2.2008-12.466-1.2522-17.105 2.1382-2.3241 1.6984 2.1382 5.3454 3.2072 8.0181"/>
+<path d="m-14.967 33.141c-69.721 12.248-14.292 4.1557-59.868 8.0181-3.7663 0.31918-7.4536 1.3576-11.225 1.6036-0.27658 0.01804-13.012-0.63506-17.105 0.53454-15.885 4.5386-30.454 12.527-45.436 19.243-4.872 2.184-21.807 7.8021-25.658 12.294-10.395 12.128-6.7971 26.752-8.0181 41.16-1.0601 12.509-2.433 25-4.2763 37.418-1.5444 10.405-4.5846 20.565-5.8799 31.003-1.7384 14.009-2.1382 28.152-3.2072 42.229-2.4945 15.323-5.1631 30.62-7.4836 45.97-0.0266 0.17618 0.47646-0.16846 0.53454 0 1.7637 5.1148 3.0046 10.402 4.8108 15.502 4.2539 12.011 10.3 23.446 13.363 35.814 7.4089 29.91-11.368 19.648 19.778 44.901 5.9448 4.8202 13.843 6.5366 20.847 9.6217 39.584 17.436 9.0399 2.6491 42.229 19.243"/>
+<path d="m-14.967 33.141c-15.858 2.8509-31.697 5.8071-47.574 8.5526-7.8224 1.3527-15.641 2.772-23.52 3.7418-3.718 0.4576-7.4863 0.30562-11.225 0.53454-4.9924 0.30566-9.9745 0.7665-14.967 1.0691-10.367 0.62832-18.039 0.37255-28.331 4.2763-2.3853 0.90477-4.9187 1.6625-6.949 3.2072-0.53565 0.40756-23.424 19.008-25.658 25.123-5.4195 14.832 0.18878 22.323-1.0691 37.418-0.54569 6.5482-2.8509 12.829-4.2763 19.243-2.2128 9.9574-6.8129 29.552-8.0181 39.556-1.8476 15.335-2.1993 41.147-1.6036 55.592 0.28051 6.8024 1.8064 13.512 2.1382 20.312 0.87418 17.921-1.3616 31.679 2.1382 49.178 1.2205 6.1027 1.5611 12.574 4.2763 18.174 14.593 30.097 55.108 41.875 68.956 72.697 1.5524 3.4554-4.0634 6.924-7.4836 8.5526-4.5501 2.1667-10.917-0.86159-14.967 2.1382-2.2953 1.7002 0.35636 5.7018 0.53454 8.5526"/>
+<path d="m-14.967 33.141c-36.04 18.968 3.6461-0.60097-91.941 19.778-8.1009 1.7271-15.802 5.0111-23.52 8.0181-8.172 3.1839-22.222 9.0637-29.4 16.036-10.651 10.347-19.942 23.872-24.589 37.952-6.9124 20.947-3.066 42.771-4.8108 64.145-1.1707 14.341-4.1355 28.481-5.8799 42.763-1.107 9.0634-1.5301 18.203-2.6727 27.262-1.3528 10.725-4.2112 21.279-4.8108 32.072-0.47534 8.5561 3.3341 17.265 1.6036 25.658-1.9476 9.4461-8.7713 17.214-12.294 26.192-2.0208 5.1499-7.2679 11.383-4.2763 16.036 18.542 28.844 50.439 23.208 78.577 31.003 10.079 2.792 20.191 6.4525 28.865 12.294 1.6523 1.1128-0.75604 4.8024-2.6727 5.3454-9.5048 2.693-19.6 2.4945-29.4 3.7418"/>
+<path d="m-14.967 33.141c-36.395 6.0658-57.499 11.059-88.733 13.898-7.322 0.66563-15.858 0.80844-22.451 4.8108-2.8084 1.7051-4.7612 4.5751-7.4835 6.4145-16.793 11.346-10.076 2.6044-28.331 18.174-1.2125 1.0342-1.5104 2.8115-2.1382 4.2763-14.496 33.824-5.566 9.3791-12.294 44.367-1.2486 6.4929-4.8835 12.632-4.8108 19.243 0.10945 9.96 5.9799 19.459 5.3454 29.4-0.99964 15.661-7.0305 30.592-10.156 45.97-4.072 20.034-3.5404 20.706-3.2072 41.694 0.0623 3.9235-0.73164 8.0458 0.53454 11.76 4.1448 12.158 9.5948 23.873 15.502 35.28 4.4556 8.6039 10.02 16.599 15.502 24.589 5.0399 7.3464 12.745 13.103 16.036 21.382 2.8376 7.1369-1.9318 16.167 1.6036 22.985 2.2402 4.3204 8.6373 4.7191 13.363 5.8799 15.24 3.7432 21.248-2.5389 16.571 2.1382"/>
+<path d="m-25.123 28.865c-84.906 15.386-52.665 14.433-95.682 14.433-3.1473 0-13.652-0.90751-17.64 1.6036-3.0938 1.9479-5.4012 4.9305-8.0181 7.4835-16.827 16.417-13.119 12.596-28.865 32.607-9.7941 12.447-18.328 21.175-19.243 39.021-1.0235 19.958 7.7266 11.833 12.829 24.589 3.0819 7.7048 6.4145 15.756 6.4145 24.054 0 9.8564-4.5796 19.181-6.4145 28.865-1.3745 7.2541-2.6749 14.552-3.2072 21.916-0.95088 13.154 0.46818 29.543 1.0691 42.763 0.40486 8.9069 0.64897 17.821 1.0691 26.727 0.47081 9.9813-1.1018 20.315 1.6036 29.934 14.087 50.088 10.779 26.867 35.814 53.988 3.2541 3.5253 4.989 8.1963 7.4836 12.294 4.4545 4.2763 8.909 8.5526 13.363 12.829"/>
+<path d="m-14.967 33.141c-26.341 9.2034-54.391 8.1464-81.25 14.433-4.5041 1.0542-8.8834 2.5898-13.363 3.7418-7.1807 1.8465-14.909 3.6228-21.382 7.4835-8.6618 5.1667-18.526 8.9045-25.658 16.036-8.8858 8.8857-6.4492 20.37-8.0181 31.003-0.90279 6.1189-2.4279 12.13-3.7418 18.174-10.207 46.951 2.7485-19.392-9.6217 58.265-1.1159 7.0054-4.1984 13.754-4.2763 20.847-0.23265 21.171 13.754 70.266 19.778 88.199 17.456 51.962 7.3609 4.3845 19.243 57.196 1.0289 4.5728 2.1382 9.2108 2.1382 13.898 0 7.8722-2.4142 15.652-2.1382 23.52 0.0894 2.5496 1.7921 4.8263 3.2072 6.949 0.44201 0.66302 1.7428 1.7609 2.1382 1.0691 0.79561-1.3923 0-3.2072 0-4.8109"/>
+<path d="m-25.123 28.865c-5.7018 4.6327-10.616 10.455-17.105 13.898-1.4495 0.7691-14.437-0.41918-16.571-0.53454-12.17-0.65784-17.324-0.86193-30.469 0-4.8301 0.31673-9.612 1.1654-14.433 1.6036-3.0218 0.27471-6.1435-0.20138-9.0872 0.53454-5.8136 1.4534-20.073 15.29-20.312 15.502-16.068 14.178-13.316 11.431-27.262 31.538-6.2818 9.0574-13.422 19.722-14.967 31.003-0.9685 7.0701 0.71272 14.254 1.0691 21.382-0.35636 9.9781 0.37666 20.055-1.0691 29.934-2.5222 17.235-13.076 42.992-11.225 62.007 1.1389 11.699 5.9095 22.757 8.5526 34.211 1.6344 7.0822 3.8902 14.123 4.2763 21.382 0.51186 9.6229-1.8475 19.232-1.6036 28.865 0.11497 4.5412-0.21514 9.8568 2.6727 13.363 7.5561 9.1752 17.64 16.007 27.261 22.985 6.6553 4.8269 14.633 7.5994 21.382 12.294 6.8372 4.7564 32.064 24.603 24.054 37.418-7.0549 11.288-23.52 12.473-35.28 18.709"/>
+<path d="m-14.967 33.141c-19.065 3.2072-37.964 7.6458-57.196 9.6217-6.933 0.7123-13.891-1.1755-20.847-1.6036-12.347-0.75982-20.845-0.69989-33.676 0-3.2222 0.17576-6.9662-0.76446-9.6217 1.0691-5.2967 3.6573-8.2775 9.8811-12.829 14.433-5.5035 5.5035-3.0539 0.14797-9.6217 4.2763-23.737 14.92-29.424 30.338-40.625 62.541-3.6993 10.636-1.5704 22.469-2.6727 33.676-1.0363 10.535-1.9239 21.109-3.7418 31.538-0.92218 5.2904-14.998 60.836-14.967 61.472 0.53476 10.873 9.5395 19.811 11.76 30.469 1.4192 6.8119-1.0691 13.889-1.0691 20.847 0 22.829 3.695 45.528 19.243 64.679 5.6824 6.999 17.009 6.0088 25.658 8.5526 74.917 19.423-6.4997-3.0868 47.039 14.967 9.1376 3.0813 18.707 4.7966 27.796 8.0181 5.0327 1.7837 9.6241 4.6277 14.433 6.949 0.3588 0.1732 1.4471 0.40855 1.0691 0.53454-18.662 6.2206-38.253 6.7268-57.73 5.8799"/>
+</g>
+<g transform="matrix(.25 0 0 .35587 73.67 -1.1861)" fill="none" stroke="#000" stroke-linecap="round">
+<path d="m-86.863 30.201c4.1607 5.8572 3.7418 10.978 3.7418 17.64" filter="url(#k)" stroke-linejoin="round" stroke-width="3.2491"/>
+<path d="m-76.974 31.141c0.75726 4.8968 1.5145 9.7936 2.2718 14.69-0.04455 0.09068-0.0632 0.20035-0.13364 0.27204-0.08654 0.08809-0.28212-0.13602-0.4009-0.13602" filter="url(#i)" stroke-width="3.2491"/>
+<path d="m-72.43 29.801c0.03195 1.8669 2.7665 13.309 1.0691 16.704" filter="url(#e)" stroke-linejoin="round" stroke-width="3.2491" style="paint-order:stroke fill markers"/>
+<path d="m-82.726 29.934c4.1607 5.8572 3.7418 10.978 3.7418 17.64" filter="url(#l)" stroke-linejoin="round" stroke-width="3.2491"/>
+<path transform="matrix(1.0568 0 0 .78304 3.8688 7.4901)" d="m-68.966 29.867c0.03195 1.8669 2.7665 13.309 1.0691 16.704" filter="url(#f)" stroke-linejoin="round" stroke-width="3.5717" style="paint-order:stroke fill markers"/>
+</g>
+</svg>

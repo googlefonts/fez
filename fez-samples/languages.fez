@@ -1,0 +1,4 @@
+Feature locl {
+    Substitute question -> questiongreek <grek/*>;
+    Substitute question -> questiondown <latn/ESP>;
+};

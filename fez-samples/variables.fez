@@ -1,0 +1,17 @@
+Routine foo {
+    If ($test) {
+      Position a <xPlacement=$test>;
+    };
+    If (not $test) {
+      Position b <xPlacement=$test>;
+    };
+    If $test or $testb {
+      Position c <xPlacement=$test>;
+    };
+    If $test and $testb {
+      Position d <xPlacement=$test>;
+    };
+    If ($test > 50) {
+      Position e <xPlacement=$test>;
+    };
+};

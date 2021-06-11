@@ -1,0 +1,19 @@
+DefineClass @inits = /Ini$|BehxIni.outD2WQ|LamIni.outD2/;
+DefineClass @medis = /Med$/;
+DefineClass @seps = /RehSep|DalSep|AlefSep/;
+DefineClass @bases = /AlefSep$|Ini$/;
+
+LoadPlugin FontEngineering;
+SetWidth space 50%;
+
+# LoadPlugin AvoidCollision;
+
+# Feature liga {
+# 	Substitute BehxIni -> BehxIni.outD2WQ;
+# 	Substitute LamIni -> LamIni.outD2;
+# };
+
+# Feature kern {
+#     AvoidCollision YehBarreeFin @inits @seps raise 50;
+#     AvoidCollision HahFin @inits @seps raise 50;
+# };

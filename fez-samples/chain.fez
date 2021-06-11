@@ -1,0 +1,8 @@
+Routine ab {
+    Substitute a -> g;
+    Substitute b -> h;
+};
+
+Feature liga {
+    Chain a (ab) b (ab) c d;
+};

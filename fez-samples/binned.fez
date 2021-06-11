@@ -1,0 +1,1 @@
+DefineClassBinned @medi 5 rise = /m\d+$/;

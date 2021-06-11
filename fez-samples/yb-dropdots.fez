@@ -1,0 +1,21 @@
+DefineClass @yehbarres = [YehBarreeFin YehBarreeFin.2];
+
+DefineClass @medis = /Med/;
+DefineClass @inits = /Ini/;
+DefineClass @dots = /Dot.*BelowNS/;
+
+LoadPlugin FontEngineering;
+
+DuplicateGlyphs @dots @dots.YB;
+
+DefineClass @ybdots = @dots.YB;
+
+LoadPlugin YehBarree;
+
+YBSettings DropDotsDepth 300;
+YBSettings DropDotsBinCount 8;
+YBSettings MaxChainLength 4;
+
+Feature kern {
+	YBReplaceDots @yehbarres @medis @dots @ybdots;
+};

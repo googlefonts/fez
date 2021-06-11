@@ -1,0 +1,4 @@
+LoadPlugin IMatra;
+Feature abvm {
+	IMatra /dv.*A$/ : dvmI -> /dvmI\.a.*/;
+};

@@ -1,0 +1,11 @@
+glyphtools>=0.7.0
+fs
+fontTools
+beziers>=0.1.0
+lark
+booleanOperations
+more_itertools
+lxml
+youseedee>=0.3.0
+dataclasses; python_version < '3.7'
+babelfont>=3

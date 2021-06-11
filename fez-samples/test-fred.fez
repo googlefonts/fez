@@ -1,0 +1,82 @@
+#comment ca va
+#   a
+LoadPlugin ClassDefinition;
+LoadPlugin Anchors;
+LoadPlugin Debug;
+LoadPlugin Variables;
+LoadPlugin Feature;
+DefineClass @perp = zero;
+DefineClass @lerp = /^g/;
+DefineClass @yerp = /e$/;
+
+LoadPlugin Position;
+DefineClass @wide = width > 900;
+DefineClass @thin = width < 300;
+
+Feature ss03 {
+    #Position @wide <30 -70 0 0> @thin;
+    Position @wide <xPlacement=30 yPlacement=-70> @thin;
+};
+
+#DefineClass @low = a | c;
+#DefineClass @low2 = a | c | e;
+#DefineClass @QQ = @low2 | @lerp;
+#DefineClass @derp = U+30->U+39;
+#DefineClass @pred = f & hasglyph(/f/ g);
+#DefineClass @wide_caps = /^[A-Z]$/ & width > 450;
+#DefineClass @thin_caps = /^[A-Z]$/ & not width > 450;
+#DefineClass @em = width == 1000;
+#DefineClass @inline = [l o l]; # works because HelperTransformer in use
+#ShowClass @wide_caps;
+DefineClassBinned @bases[width,5] = /.*/;
+#DumpClassNames;
+#ShowClass @bases_width1;
+#DumpClasses;
+LoadPlugin Routine;
+LoadPlugin Substitute;
+Substitute a -> b <<cyrl/RUS>>;
+#Anchors A _top <-570 1290> top <-570 1650>;
+
+LoadAnchors;
+Feature mark {
+    Attach &top &_top bases;
+};
+
+Routine MEDIFINA {
+    Substitute a -> b;
+};
+
+Set once = 11;
+
+IDontExist @get @owned.hard [l o l] [@yes @no] [] [@QQ] U+20 @cluck~cluck.cluck;
+
+Feature ss02 {
+    LoadPlugin Conditional;
+    If $once == 11 {
+        Substitute Q -> D;
+    };
+
+    Routine {
+    Substitute a -> b;
+    Substitute b -> c;
+    } MarkAttachmentType g;
+
+    Routine qi {
+    Substitute a -> b;
+    Substitute b -> c;
+    } IgnoreMarks;
+
+    
+    Substitute /^[a-z]$/ -> $1.low~low.high;
+    ReverseSubstitute /^[a-z]$/ -> $1.low~low.high;
+
+    #Routine {
+    #    Substitute a -> b;
+    #};
+
+
+    LoadPlugin Chain;
+    Routine {
+    Chain a b (b ^qi a ^qi);
+    } IgnoreMarks IgnoreLigatures;
+};
