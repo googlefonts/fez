@@ -45,7 +45,7 @@ class MedialRa(FEZVerb):
         rasAndOverhangs = list(reversed(sorted(rasAndOverhangs)))
 
         for b in bases:
-            layer = self.parser.font.default_master.get_glyph_layer(b).rsb
+            layer = self.parser.font.default_master.get_glyph_layer(b)
             w = layer.width - ((layer.rsb or 0) + (layer.lsb or 0))
             bestRa = None
             for ra, overhang in rasAndOverhangs:
