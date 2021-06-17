@@ -51,7 +51,7 @@ class IMatra(FEZVerb):
         # Organise matras into overhang widths
         matras2bases = {}
         matrasAndOverhangs = [
-            (m, -parser.font[m].rightMargin) for m in matras
+            (m, -parser.font.default_master.get_glyph_layer(m).rsb) for m in matras
         ]
         for b in bases:
             w = self.find_stem(parser.font, b)
@@ -70,14 +70,15 @@ class IMatra(FEZVerb):
         return [fontFeatures.Routine(rules=rv)]
 
     def find_stem(self, font, base):
-        glyph = font[base]
+        glyph = font.default_master.get_glyph_layer(base)
         # Try stem anchors first
         possible = [a.x for a in glyph.anchors if a.name == "abvm.e" or a.name == "abvm" ]
         if possible:
             return possible[0]
         # Try a right margin
-        if "dvmE" in font:
-            margin = [a.x for a in font["dvmE"].anchors if a.name == "_abvm.e" or a.name == "_abvm" ]
+        if 0x0947 in font.unicode_map:
+            dvme_anchors = font.default_master.get_glyph_layer(font.unicode_map(0x0947)).anchors
+            margin = [a.x for a in dvme_anchors if a.name == "_abvm.e" or a.name == "_abvm" ]
             if margin:
                 return glyph.width + margin[0]
         return glyph.width / 2

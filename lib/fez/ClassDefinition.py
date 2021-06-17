@@ -246,7 +246,7 @@ class DefineClass(FEZVerb):
             truth = glyphname in parser.fontfeatures.anchors and anchor in parser.fontfeatures.anchors[glyphname]
         elif metric == "category":
             cat = predicate["value"]
-            truth = parser.font[glyphname].category == cat
+            truth = parser.font.glyphs[glyphname].category == cat
         elif metric == "hasglyph":
             truth = re.sub(predicate["value"]["replace"], predicate["value"]["with"], glyphname) in parser.font
         else:

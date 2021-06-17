@@ -71,7 +71,7 @@ class SetWidth(FEZVerb):
     def action(self, args):
         (glyphs, width, is_relative) = args
         for g in glyphs.resolve(self.parser.fontfeatures, self.parser.font):
-            glyph = self.parser.font[g]
+            glyph = self.parser.font.default_master.get_glyph_layer(g)
             if is_relative:
                 glyph.width = glyph.width * width / 100
             else:
@@ -91,13 +91,14 @@ class DuplicateGlyphs:
             if n in self.parser.glyphs:
                 warnings.warn("Glyph '%s' already exists" % n)
                 continue
-            oldglyph = parser.font[o]
+            oldglyph = parser.font.glyphs[o]
             newglyph = o.copy()
             newglyph.name = n
             newglyph.category = oldglyph.category
+            parser.font.glyphs.append(newglyph)
             # XXX mark attachment class
             self.parser.font_modified = True
-        self.parser.glyphs = list(parser.font.keys())
+        self.parser.glyphs = list(parser.font.glyphs)
         return []
 
 class SetCategory(FEZVerb):
