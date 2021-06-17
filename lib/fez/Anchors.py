@@ -114,7 +114,7 @@ class LoadAnchors(FEZVerb):
             for a in g.anchors:
                 if glyphname not in self.parser.fontfeatures.anchors:
                     self.parser.fontfeatures.anchors[glyphname] = {}
-                self.parser.fontfeatures.anchors[glyphname][a.name] = (a.x, a.y)
+                self.parser.fontfeatures.anchors[glyphname][a.name] = (int(a.x), int(a.y))
 
 class Attach(FEZVerb):
     def action(self, args):
