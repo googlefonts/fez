@@ -306,7 +306,7 @@ class BYMoveDots(FEZVerb):
         paths = get_bezier_paths(font, bariye)
         path = paths[0]
         bounds = path.bounds()
-        x_of_tail = get_rise(font.font, bariye)
+        x_of_tail = get_rise(font, bariye)
         ray = Line(
             Point(x_of_tail - 0.1, bounds.bottom - 5),
             Point(x_of_tail + 0.1, bounds.top + 5),
@@ -315,6 +315,12 @@ class BYMoveDots(FEZVerb):
         for seg in path.asSegments():
             intersections.extend(seg.intersections(ray))
         intersections = list(sorted(intersections, key=lambda i: i.point.y))
+        if not intersections:
+            warnings.warn(
+                    "Couldn't find an intersection for %s"
+                    % bariye
+                )
+            return 0
         i = intersections[-1]
         return i.point.y
 
@@ -325,7 +331,7 @@ class BYMoveDots(FEZVerb):
         behforms = list(
             filter(
                 lambda g: g.startswith("BEm") or g.startswith("BEi"),
-                parser.font.keys(),
+                parser.font.exportedGlyphs(),
             )
         )
         bottomOfDot = statistics.mean(
@@ -337,7 +343,7 @@ class BYMoveDots(FEZVerb):
                 [
                     parser.fontfeatures.anchors[x]["_bottom"][1]
                     for x in below_dots
-                    if x in parser.fontfeatures.anchors
+                    if x in parser.fontfeatures.anchors and "_bottom" in parser.fontfeatures.anchors[x]
                 ]
             )
             anchor2_y = statistics.mean(
