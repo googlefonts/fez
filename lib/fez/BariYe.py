@@ -140,6 +140,29 @@ class BYMoveDots(FEZVerb):
         warnings.warn("Smallest medi width is %i" % smallest_medi_width)
         smallest_medi = min(medis, key=lambda g: get_run(parser.font, g))
 
+
+        # Next, let's create a chain rule for all nukta sequences
+        dropBYsRoutine = fontFeatures.Routine(flags=0x0010)
+        dropBYsRoutine.markFilteringSet = below_dots
+
+        dropADotRoutine = fontFeatures.Routine()
+        # Substitute those not ending .yb with those ending .yb
+        below_dots_non_yb = list(
+            sorted(filter(lambda x: not x.endswith(".yb"), below_dots))
+        )
+        below_dots_yb = list(
+            sorted(filter(lambda x: x.endswith(".yb"), below_dots))
+        )
+        if len(below_dots_non_yb) != len(below_dots_yb):
+            raise ValueError(
+                "Mismatch in @below_dots: %s has .yb suffix, %s does not"
+                % (below_dots_yb, below_dots_non_yb)
+            )
+
+        dropADotRoutine.addRule(
+            fontFeatures.Substitution([below_dots_non_yb], [below_dots_yb])
+        )
+
         routines = []
         for bariye in parser.fontfeatures.namedClasses["bariye"]:
             warnings.warn("BariYe computation for %s" % bariye)
@@ -192,28 +215,6 @@ class BYMoveDots(FEZVerb):
             ))
             warnings.warn("Max sequence width is %i" % maximum_sequence_length)
 
-            # Next, let's create a chain rule for all nukta sequences
-            dropBYsRoutine = fontFeatures.Routine(flags=0x0010)
-            dropBYsRoutine.markFilteringSet = below_dots
-
-            dropADotRoutine = fontFeatures.Routine()
-            # Substitute those not ending .yb with those ending .yb
-            below_dots_non_yb = list(
-                sorted(filter(lambda x: not x.endswith(".yb"), below_dots))
-            )
-            below_dots_yb = list(
-                sorted(filter(lambda x: x.endswith(".yb"), below_dots))
-            )
-            if len(below_dots_non_yb) != len(below_dots_yb):
-                raise ValueError(
-                    "Mismatch in @below_dots: %s has .yb suffix, %s does not"
-                    % (below_dots_yb, below_dots_non_yb)
-                )
-
-            dropADotRoutine.addRule(
-                fontFeatures.Substitution([below_dots_non_yb], [below_dots_yb])
-            )
-
             maybeDropDotRoutine = fontFeatures.Routine(flags=0x0010)
             maybeDropDotRoutine.markFilteringSet = below_dots
 
@@ -239,9 +240,9 @@ class BYMoveDots(FEZVerb):
 
                 lu = [None] * len(sequence)
                 if alwaysDrop:
-                    lu[0] = [dropADotRoutine]
+                    lu[0] = [self.parser.fontfeatures.referenceRoutine(dropADotRoutine)]
                 else:
-                    lu[0] = [maybeDropDotRoutine]
+                    lu[0] = [self.parser.fontfeatures.referenceRoutine(maybeDropDotRoutine)]
                 for j in range(0, 2 ** (len(sequence) - 1)):
                     binary = "{0:0%ib}" % (len(sequence) - 1)
                     marksequence = [bin2mk[x] for x in list(binary.format(j))]
@@ -294,11 +295,7 @@ class BYMoveDots(FEZVerb):
                         if total_rise + m[1] < gapRequired:
                             queue.append([list(m)] + consideration)
 
-            # Add all the routines to the parser
-            parser.fontfeatures.routines.append(dropADotRoutine)
-            if not alwaysDrop:
-                parser.fontfeatures.routines.append(maybeDropDotRoutine)
-            routines.append(dropBYsRoutine)
+        routines.append(dropBYsRoutine)
         return routines
 
     def get_yb_clearance(self, parser, bariye):
