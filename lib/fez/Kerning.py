@@ -62,11 +62,12 @@ class Kerning(FEZVerb):
             # XXX split mark/base?
             if glyphselector and not any(glyph in glyphselector for glyph in l+r):
                 continue
-            rules.append(fontFeatures.Positioning(
-                [l,r],
-                [ fontFeatures.ValueRecord(xAdvance=kern), fontFeatures.ValueRecord() ],
+            if l in self.parser.font.exportedGlyphs() and r in self.parser.font.exportedGlyphs():
+                rules.append(fontFeatures.Positioning(
+                    [l,r],
+                    [ fontFeatures.ValueRecord(xAdvance=kern), fontFeatures.ValueRecord() ],
                 flags=0x8
-            ))
+                ))
         return rules
 
 
