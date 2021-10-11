@@ -69,7 +69,7 @@ class Routine(FEZVerb):
     def languages(self, args):
         rv = []
         while args:
-            rv.append(tuple(map(str,args[0:2])))
+            rv.append(tuple(map((lambda x: "%-4s" % x),args[0:2])))
             args = args[2:]
         return rv
 
