@@ -74,16 +74,12 @@ LoadAnchors_GRAMMAR = """
 action:
 """
 
-#"""
-#Anchors_Args = glyphselector:gs ws '{' ws (anchor_def)+:a ws '}' -> [gs, a]
-#anchor = <(letter|digit|"."|"_")+>
-#anchor_def = anchor:anchorname ws '<' integer:x ws integer:y '>' ws -> {"name":anchorname, "x": x, "y": y}
-#Attach_Args = '&' anchor:anchor1 ws '&' anchor:anchor2 ws ("marks"|"bases"|"cursive"):attachtype -> [anchor1, anchor2, attachtype]
-#
-#LoadAnchors_Args = ws -> ()
-#"""
+PropagateAnchors_GRAMMAR = """
+?start: action
+action:
+"""
 
-VERBS = ["Anchors", "Attach", "LoadAnchors"]
+VERBS = ["Anchors", "Attach", "LoadAnchors", "PropagateAnchors"]
 
 class Anchors(FEZVerb):
     def anchors(self, args):
@@ -158,4 +154,23 @@ class Attach(FEZVerb):
                 ]
             )
         ]
+
+
+class PropagateAnchors(FEZVerb):
+    def action(self, _):
+        for glyphname in self.parser.font.exportedGlyphs():
+            # This does a simple, first-come-first-served base component propagation
+            g = self.parser.font.default_master.get_glyph_layer(glyphname)
+            if not g.components:
+                continue
+            if glyphname not in self.parser.fontfeatures.anchors:
+                self.parser.fontfeatures.anchors[glyphname] = {}
+            anchor_dict = self.parser.fontfeatures.anchors[glyphname]
+
+            for comp in g.components:
+                comp_glyph = self.parser.font.default_master.get_glyph_layer(comp.ref)
+                for a in comp_glyph.anchors:
+                    if a.name not in anchor_dict:
+                        transformed = comp.transform.transformPoint((a.x, a.y))
+                        anchor_dict[a.name] = (int(transformed[0]), int(transformed[1]))
 
