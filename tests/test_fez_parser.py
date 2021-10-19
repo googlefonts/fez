@@ -180,7 +180,7 @@ def test_substitute(parser):
     s = "Feature rlig { Substitute a -> b; };"
     parser.parseString(s)
     assert alltrim(parser.fontfeatures.asFea()) == alltrim(
-        "feature rlig { lookup Routine_1 { ; sub a by b; } Routine_1; } rlig;"
+        "lookup Routine_1 { ; sub a by b; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
     )
 
 
@@ -188,5 +188,5 @@ def test_substitute2(parser):
     s = "Feature rlig { Substitute [a b] -> [c d]; };"
     parser.parseString(s)
     assert alltrim(parser.fontfeatures.asFea()) == alltrim(
-        "feature rlig { lookup Routine_1 { ; sub [a b] by [c d]; } Routine_1; } rlig;"
+        "lookup Routine_1 { ; sub [a b] by [c d]; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
     )
