@@ -297,7 +297,7 @@ class FezParser:
             s: Layout rules in FEZ format.
         """
         try:
-            rv = self.transformer.transform(self.parser.parse(s))
+            rv = self.expand_statements(self.transformer.transform(self.parser.parse(s)))
         except VisitError as e:
             raise e.orig_exc
         return rv
@@ -312,6 +312,18 @@ class FezParser:
             location = { locationtuple[0]["barename"]: locationtuple[1] }
             vs.add_value(location, value)
         return vs
+
+    def expand_statements(self, statements):
+        rv = []
+        for verb, args in statements:
+            if not args:
+                continue
+            if args[0] == FEZVerb._THUNK:
+                thunk, action, action_args = args
+                rv.extend(action(action_args))
+            else:
+                rv.extend(args)
+        return rv
 
 
 class FezTransformer(lark.Transformer):
@@ -358,7 +370,9 @@ class FezTransformer(lark.Transformer):
                 ret.append(after_args if len(after_args) > 0 else None)
             else:
                 ret.append(None)
-            verb_ret = (verb, transformer.action(ret))
+            # Not calling the transformer action yet allows the wrapping verb
+            # to decide when to call it.
+            verb_ret = (verb, [transformer._THUNK, transformer.action, ret])
         # For normal plugins that don't take statements
         elif len(args) == 0 or isinstance(args[0], str):
             tree = requested_plugin.parser.parse(' '.join(args))
@@ -383,6 +397,8 @@ def _UNICODEGLYPH(u):
     return int(u[2:], 16)
 
 class FEZVerb(lark.Transformer):
+    _THUNK = "__THUNK__"
+
     def __init__(self, parser):
         self.parser = parser
 

@@ -103,6 +103,9 @@ class Routine(FEZVerb):
         if not statements:
             rr = fontFeatures.RoutineReference(name = routinename)
             return [rr]
+
+        statements = self.parser.expand_statements(statements)
+
         r = fontFeatures.Routine()
         if routinename:
             r.name = routinename

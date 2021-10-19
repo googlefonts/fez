@@ -57,8 +57,12 @@ class Feature(FEZVerb):
         (featurename, statements, _) = args
         featurename = featurename[0]
 
-        results = self.parser.filterResults(statements)
         self.parser.current_feature = featurename
+
+        rv = []
+        statements = self.parser.expand_statements(statements)
+
+        results = self.parser.filterResults(statements)
         oddStatements = []
         def wrap_and_flush():
             nonlocal oddStatements
