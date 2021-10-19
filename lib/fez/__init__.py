@@ -9,6 +9,8 @@ from importlib import import_module
 from fontFeatures import FontFeatures
 from more_itertools import collapse
 from fontFeatures.variableScalar import VariableScalar
+from lark.visitors import VisitError
+
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     return "# %s\n" % (message)
@@ -218,8 +220,9 @@ class FezParser:
     plugins = dict()
     variables = dict()
     current_file = pathlib.Path().absolute()
+    lark_kwargs = dict(propagate_positions=True)
 
-    parser = lark.Lark(HELPERS+GRAMMAR)
+    parser = lark.Lark(HELPERS+GRAMMAR, **lark_kwargs)
 
     def __init__(self, font):
         for p in self.DEFAULT_PLUGINS:
@@ -259,17 +262,17 @@ class FezParser:
             verb_abgrammar = getattr(mod, v+"_afterbrace_GRAMMAR", None)
 
             if verb_grammar:
-                verb.parser = lark.Lark(rules+verb_grammar)
+                verb.parser = lark.Lark(rules+verb_grammar, **self.lark_kwargs)
             else:
-                verb.parser = lark.Lark(rules)
+                verb.parser = lark.Lark(rules, **self.lark_kwargs)
 
             if verb_bbgrammar:
-                verb.bbparser = lark.Lark(rules+verb_bbgrammar)
+                verb.bbparser = lark.Lark(rules+verb_bbgrammar, **self.lark_kwargs)
             else:
                 verb.bbparser = NullParser()
 
             if verb_abgrammar:
-                verb.abparser = lark.Lark(rules+verb_abgrammar)
+                verb.abparser = lark.Lark(rules+verb_abgrammar, **self.lark_kwargs)
             else:
                 verb.abparser = NullParser()
 
@@ -293,7 +296,11 @@ class FezParser:
         Args:
             s: Layout rules in FEZ format.
         """
-        return self.transformer.transform(self.parser.parse(s))
+        try:
+            rv = self.transformer.transform(self.parser.parse(s))
+        except VisitError as e:
+            raise e.orig_exc
+        return rv
 
     def filterResults(self, results):
         ret = [x for x in collapse(results) if x and not isinstance(x, str)]
@@ -335,13 +342,19 @@ class FezTransformer(lark.Transformer):
             transformer = requested_plugin.transformer(self.parser)
             ret = []
             if before_tree:
-                before_args = transformer.transform(before_tree)
+                try:
+                    before_args = transformer.transform(before_tree)
+                except VisitError as e:
+                    raise e.orig_exc
                 ret.insert(0, before_args if len(before_args) > 0 else None)
             else:
                 ret.insert(0, None)
             ret.append(statements)
             if after_tree:
-                after_args  = transformer.transform(after_tree)
+                try:
+                    after_args = transformer.transform(after_tree)
+                except VisitError as e:
+                    raise e.orig_exc
                 ret.append(after_args if len(after_args) > 0 else None)
             else:
                 ret.append(None)
