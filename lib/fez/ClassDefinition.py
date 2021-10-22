@@ -151,8 +151,8 @@ class DefineClass(FEZVerb):
         self.parser.fontfeatures.namedClasses[classname] = glyphs
 
     def has_glyph_predicate(self, args):
-        glyphre, withs = args
-        value = {"replace": re.compile(glyphre.value[1:-1]), "with": withs.value}
+        (glyphre, withs) = args[0], "".join([a.value for a in args[1:]])
+        value = {"replace": re.compile(glyphre.value[1:-1]), "with": withs}
         return {"predicate": "hasglyph", "value": value, "inverted": False}
 
     def has_anchor_predicate(self, args):
@@ -248,7 +248,7 @@ class DefineClass(FEZVerb):
             cat = predicate["value"]
             truth = parser.font.glyphs[glyphname].category == cat
         elif metric == "hasglyph":
-            truth = re.sub(predicate["value"]["replace"], predicate["value"]["with"], glyphname) in parser.font
+            truth = re.sub(predicate["value"]["replace"], predicate["value"]["with"], glyphname) in parser.font.exportedGlyphs()
         else:
             raise ValueError("Unknown metric {}".format(metric))
         return truth
