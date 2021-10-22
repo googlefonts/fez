@@ -315,6 +315,9 @@ class FezParser:
 
     def expand_statements(self, statements):
         rv = []
+        # Gross
+        if isinstance(statements, tuple):
+            statements = [statements]
         for verb, args in statements:
             if not args:
                 continue
