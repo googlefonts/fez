@@ -32,6 +32,7 @@ substitution rules.
 
 import fontFeatures
 from . import FEZVerb
+import lark
 from .util import extend_args_until
 
 PARSEOPTS = dict(use_helpers=True)
@@ -49,8 +50,8 @@ GRAMMAR = BASE_GRAMMAR+"""
 normal_action: leftside "->" rightside languages?
 contextual_action: pre "(" leftside ")" post "->" rightside languages?
 
-leftside: glyphselector+
-rightside: (glyphselector | dollar_gs)+
+leftside: (glyphselector WS)* glyphselector
+rightside: (glyphselector WS| dollar_gs WS)* (glyphselector|dollar_gs)
 """
 
 Substitute_GRAMMAR = """
@@ -71,7 +72,7 @@ class Substitute(FEZVerb):
         return {"reference": int(ref.value), "suffixes": suffixes}
 
     def leftside(self, args):
-        return args
+        return [t for t in args if not isinstance(t, lark.Token) or t.type != "WS"]
 
     rightside = leftside
     pre = leftside
