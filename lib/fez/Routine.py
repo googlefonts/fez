@@ -15,11 +15,44 @@ added to the end of the block, and may be any combination of ``RightToLeft``;
 ``IgnoreBases`` (AFDKO users, note the changed name); ``IgnoreLigatures``;
 ``IgnoreMarks`` or ``UseMarkFilteringSet`` followed by a glyph selector.
 
-In simple cases, you do not need to wrap rules in a routine inside of a feature
-block; however, to combine rules with different flags, you must place the rules
-within a routine. Once you have placed one set of rules within a routine, you
-may find it less surprising to place all rulesets within a feature within their
-own routines as well, due to the way that OpenType orders lookups for processing.
+For example, in AFDKO::
+
+    lookup test {
+        lookupflag IgnoreBaseGlyphs UseMarkFilteringSet @thing;
+        # ... rules ...
+    } test;
+
+becomes::
+
+    Routine test {
+        # ... rules ...
+    } IgnoreBases UseMarkFilteringSet @thing;
+
+As in AFDKO, a ``Routine`` may appear within a ``Feature`` block or outside one,
+in which case it defines a named routine to be accessed later. In simple cases,
+you do not need to wrap rules in a routine inside of a feature block; however,
+to combine rules with different flags, you must place the rules within a routine.
+
+FEZ routines do not always correspond directly to OpenType lookups, although in
+many cases they will. FEZ routines are more flexible, and may contain a mixture of
+rule types and may even contain rules targetting different languages::
+
+    Routine test {
+        Substitute [four-arab five-arab] -> [four-urdu five-urdu] <<ara/URD>>;
+        Substitute [four-arab five-arab] -> [four-farsi five-farsi] <<ara/FAR>>;
+    };
+
+FEZ will resolve these routines into one or more OpenType lookups and alter the
+lookup references inside features accordingly when compiling to AFDKO syntax.
+
+FEZ routines themselves may apply to certain script/language combinations, using
+the language syntax:
+
+    Routine test {
+        Substitute [four-arab five-arab] -> [four-urdu five-urdu];
+    } <<ara/URD>>;
+
+As with AFDKO, this syntax can only be used when inside a feature block.
 """
 
 PARSEOPTS = dict(use_helpers=True)

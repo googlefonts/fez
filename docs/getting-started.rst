@@ -160,6 +160,10 @@ Here's one way to express it::
     Substitute virama-myanmar @subjoining_consonant -> @subjoining_consonant.below;
   };
 
+Don't worry if you don't understand the syntax right now! We're only at the start
+of the manual, and we'll unpack it in later chapters! But to briefly explain what
+this is doing:
+
 - First we define a class ``subjoining_consonant`` which consists of all the glyphs
   for which there is a corresponding glyph in the font with the same name plus
   ``.below``.
@@ -168,7 +172,7 @@ Here's one way to express it::
   with the corresponding ``.below`` glyph.
 
 Now if you add or remove glyphs from the font, you don't need to update your rules,
-because your rules are expressing *what* do not, not *how* to do it. The computer
+because your rules are expressing *what* to do, not *how* to do it. The computer
 works out the *how*. That's what computers are for.
 
 Here's another way to say it::
@@ -207,7 +211,10 @@ Finally, here's another way to say it::
 
 Of course this rather defeats the point of the language. But it is worth
 repeating: you can program FEZ this way if you want to. The fancy stuff is just
-there to help you. You don't need to use it if you don't want to.
+there to help you. You don't need to use it if you don't want to. In fact, that's
+the point of expressibility - there's more than one way to do it, and you choose
+the one that best fits your understanding of the task and the language. As you
+get more comfortable with the language, you will be able to take more shortcuts.
 
 One more example before we look at the language in depth. We're still doing Myanmar.
 Again we'll start with Adobe feature syntax::
@@ -234,6 +241,32 @@ consonants class and additionally have a width of over 800 units. Expressing it
 this way isn't going to go wrong; we won't leave out a glyph by mistake, nor do
 we need to update the rule when the font changes. We're expressing intent, not
 action.
+
+This idea of expressing intent not action reaches its height in *extensibility*.
+Extensibility means that you can package up the computation of different rules
+into their own "verbs" in the FEZ language. What does this mean? A common task
+in Devanagari is to replace the form of the i-matra (ikar) glyph with a
+width-specific form based on the width of the base character following it.
+In AFDKO, it's something like this::
+
+  feature pres {
+    sub iMatra-deva' [ ... width 2 glyphs here ... ] by iMatra-deva.w2;
+    sub iMatra-deva' [ ... width 3 glyphs here ... ] by iMatra-deva.w3;
+    sub iMatra-deva' [ ... width 4 glyphs here ... ] by iMatra-deva.w4;
+  } pres;
+
+And then of course you have to work out which glyphs go in which class. But again,
+we have a computer which can work it out for you. Here's how you say it in FEZ::
+
+  LoadPlugin IMatra;
+
+  Feature pres {
+    IMatra @consonants : iMatra-deva -> /^iMatra-deva/;
+  };
+
+We've extended the language using the ``IMatra`` extension which adds a new verb to
+the language called ``IMatra``. Then we use this verb to compute and perform the
+substitutions for us. The intent is practically self-describing.
 
 Hopefully I've convinced you that this is a good thing to do. Now let's look at
 how the FEZ language works.

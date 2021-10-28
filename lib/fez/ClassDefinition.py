@@ -7,38 +7,47 @@ verb. This takes three arguments: the first is a class name, which must start
 with the ``@`` character; the second is the symbol ``=``; the third is a glyph
 selector as described above::
 
+    # Create a class which consists of the members of @upper, with the .alt
+    # suffix added to each glyph.
     DefineClass @upper_alts = @upper.alt;
+
+    # Create a class of all glyphs matching the regex /^[a-z]$/ - i.e.
+    # single character lowercase names "a", "b", "c" ... "z"
     DefineClass @lower = /^[a-z]$/;
+
+    # Create a class of the named uppercase glyphs, plus the contents of
+    # @lower.
     DefineClass @upper_and_lower = [A B C D E F G @lower];
 
 In addition, glyph classes can be *combined* within the ``DefineClass``
-statement using intersection (``|``) and union (``&``) operators::
+statement using the intersection (``|``), union (``&``) and subtraction (``-``)
+operators.
 
+The ``|`` operator combines two classes together::
+
+    # Equivalent to [@lower_marks @upper_marks]
     DefineClass @all_marks = @lower_marks | @upper_marks;
+
+Whereas the ``&`` operator returns only glyphs which are common to both classes::
+
     DefineClass @uppercase_vowels = @uppercase & @vowels;
 
-As well as subtracted (``-``):
+The ``-`` returns the glyphs in the first class which are not in the
+second class::
 
     DefineClass @ABCD = A | B | C | D;
+
+    # Everything in @ABCD apart from D (i.e. A, B, C)
     DefineClass @ABC = @ABCD - D;
 
-Glyph classes can also be defined using the Unicode codepoints that the glyphs
-map to in the font. For example:
+Finally, within the context of a class definition, glyphs can also be selected
+based on certain *predicates*, which test the glyphs for various properties::
 
-    DefineClass @Q = U+51;
+    # All glyphs which start with the letters BE and whose advance width is
+    # less than 200 units.
+    DefineClass @short_behs = /^BE/ & width < 200;
 
-In the PostScript standard, the ASCII digits don't have regex friendly names,
-so you may wish to select them with a Unicode range selector:
-
-    DefineClass @digits = U+30=>U+39;
-
-Finally, glyph classes can be filtered through the use of one or more
-*predicates*, which take the form ``and`` followed by a bracketed relationship,
-and which tests the properties of the glyphs against the expression given::
-
-    DefineClass @short_behs = /^BE/ and (width < 200);
-
-- The first part of the relationship is a metric, which can be one of
+There are a number of metric predicates:
 
   - ``width`` (advance width)
   - ``lsb`` (left side bearing)
@@ -50,25 +59,61 @@ and which tests the properties of the glyphs against the expression given::
   - ``rise`` (difference in Y coordinate between cursive entry and exit)
   - ``fullwidth`` (``xMax``-``xMin``)
 
-- The second part is a comparison operator (``>=``, ``<=``, ``=``, ``<``, or
-  ``>``).
+These predicates are followed by a comparison operator (``>=``, ``<=``, ``=``, ``<``, or
+``>``) and then an integer. So::
 
-- The third is either an integer or a metric name and the name of a single
-  glyph in brackets.
+    DefineClass @overhands = rsb < 0;
 
-This last form is best understood by example. The following definition selects
+Alternatively, instead of an integer, you may supply a metric name and the name
+of a single glyph in brackets. For example, the following definition selects
 all members of the glyph class ``@alpha`` whose advance width is less than the
 advance width of the ``space`` glyph::
 
-    DefineClass @shorter_than_space = @alpha and (width < width(space));
+    DefineClass @shorter_than_space = @alpha & width < width(space);
 
-- As well as testing for glyph metrics, the following other relationships
-  are defined:
+As well as testing for glyph metrics, the following other predicates are available:
 
-  - ``hasglyph(regex string)`` (true if glyph after replacement of regex by
-    string exists in the font)
-  - ``hasanchor(anchorname)`` (true if the glyph has the named anchor)
-  - ``category(base)`` (true if the glyph has the given category)
+- ``hasglyph(regex string)``
+
+This is true for all glyphs where, if you take the glyph's name, and replace the
+regular expression with the given string, you get the name of another glyph
+in the font. For example::
+
+  DefineClass @small_capable = hasglyph(/$/ .sc);
+
+So we look at the glyph ``A``, for example, and test "If I replace the end of
+this glyph's name with ``.sc`` - i.e. ``A.sc`` - do I get the name of a valid
+glyph?" If so, then ``A`` is small-cap-able and goes into our class. Next we
+look at ``B``, and so on.
+
+  DefineClass @localizable_digits = @digits & hasglyph(/-arab/ "-farsi");
+
+I have ``one-arab`` in my ``@digits`` class, but when I replace ``-arab`` with
+``-farsi`` yielding ``one-farsi``, I don't see that in my font; so ``one-arab``
+is not a localizable digit. But when I replace the ``-arab`` in ``four-arab`` to
+get ``four-farsi``, I do see that in my font, so ``four-arab`` *is* a localizable
+digit.
+
+- ``hasanchor(anchorname)``
+
+This predicate is true if the glyph has the given anchor in the font source.
+(You will need to use either the ``LoadAnchors`` or ``Anchor`` verb before using
+this predicate!) Example::
+
+    DefineClass @topmarks = hasanchor(_top);
+
+- ``category(categoryname)``
+
+This predicate is true if the glyph has the given category in the font source.
+The category is expected to be ``base``, ``mark`` or ``ligature``.
+
+    DefineClass @stackable_marks = category(mark) & (hasanchor(_bottom) | hasanchor(_top));
+
+This defines ``@stackable_marks`` to be all mark glyphs with either a ``_bottom``
+or ``_top`` anchor.
+
+Experience has shown that with smart enough class definitions, you can get away
+with pretty dumb rules.
 
 Binned Definitions
 ------------------
@@ -83,17 +128,20 @@ operation of organising glyphs into groups of similar metrics "binning".
 The ``ClassDefinition`` plugin also provides the ``DefineClassBinned`` verb,
 which generated a set of related glyph classes. The arguments of ``DefineClassBinned``
 are identical to that of ``DefineClass``, except that after the class name
-you must specify an open square bracket, the metric to be used to bin the
-glyphs, a comma, the number of bins to create, and a close bracket, like so::
+you must specify an open square bracket, one of the metrics listed above
+to be used to bin the glyphs, a comma, the number of bins to create, and a
+close bracket, like so::
 
     DefineClassBinned @bases[width,5] = @bases;
 
 This will create five classes, called ``@bases_width1`` .. ``@bases_width5``,
-grouped in increasing order of advance width. Note that the size of the bins is
-not guaranteed to be equal, but glyphs are clustered according to the similarity
-of their metric. For example, if the advance widths are 99, 100, 110, 120,
-500, and 510 and two bins are created, four glyphs will be in one bin and two
-will be in the second.
+grouped in increasing order of advance width.
+
+Note that the size of the bins is not guaranteed to be equal, but bins are "smart":
+glyphs are clustered according to the similarity of their metric. For example, if
+the advance widths are 99, 100, 110, 120, 500, and 510 and two bins are created,
+one bin will contain four glyphs (those with widths 99-120) and the other bin
+will contain two glyphs (those with widths 500-510).
 
 (This is just an example for the purpose of explaining binning. We'll show a
 better way to handle the i-matra question later.)
