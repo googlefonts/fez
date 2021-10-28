@@ -80,3 +80,10 @@ feature ss01 {
 ```
 
 FEZ can do much more; see the [plugins documentation](https://fez.readthedocs.io/en/latest/fez-format.html#standard-plugins). Writing your own plugins is as simple as [defining its grammar, verb, and adding a class with an `action()` method](https://fez.readthedocs.io/en/latest/fez-format.html#writing-your-own-plugins).
+
+## Contributors
+
+See the [CONTRIBUTORS.txt](CONTRIBUTORS.TXT) file for the full list of contributors. Major contributions are described below:
+
+* FEZ was originally written by Simon Cozens
+* Fred Brennan contributed a new parser and documentation updates
