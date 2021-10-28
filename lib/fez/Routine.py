@@ -38,8 +38,8 @@ many cases they will. FEZ routines are more flexible, and may contain a mixture 
 rule types and may even contain rules targetting different languages::
 
     Routine test {
-        Substitute [four-arab five-arab] -> [four-urdu five-urdu] <<ara/URD>>;
-        Substitute [four-arab five-arab] -> [four-farsi five-farsi] <<ara/FAR>>;
+        Substitute [four-arab five-arab] -> [four-urdu five-urdu] <<arab/URD>>;
+        Substitute [four-arab five-arab] -> [four-farsi five-farsi] <<arab/FAR>>;
     };
 
 FEZ will resolve these routines into one or more OpenType lookups and alter the
@@ -50,7 +50,7 @@ the language syntax:
 
     Routine test {
         Substitute [four-arab five-arab] -> [four-urdu five-urdu];
-    } <<ara/URD>>;
+    } <<arab/URD>>;
 
 As with AFDKO, this syntax can only be used when inside a feature block.
 """
