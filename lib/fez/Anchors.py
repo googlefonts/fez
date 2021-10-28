@@ -65,7 +65,8 @@ anchor: BARENAME "<" integer_container integer_container ">"
 
 Attach_GRAMMAR = """
 ?start: action
-action: "&" BARENAME "&" BARENAME ATTACHTYPE
+action: "&" BARENAME "&" BARENAME ATTACHTYPE maybe_languages
+maybe_languages: languages?
 ATTACHTYPE: "marks" | "bases" | "cursive"
 """
 
@@ -114,7 +115,7 @@ class LoadAnchors(FEZVerb):
 
 class Attach(FEZVerb):
     def action(self, args):
-        (aFrom, aTo, attachtype) = args    
+        (aFrom, aTo, attachtype, languages) = args
 
         bases = {}
         marks = {}
@@ -151,10 +152,22 @@ class Attach(FEZVerb):
             fontFeatures.Routine(
                 rules=[
                     fontFeatures.Attachment(aFrom, aTo, bases, marks, font=self.parser.font)
-                ]
+                ],
+                languages = languages
             )
         ]
 
+    def languages(self, args):
+        rv = []
+        while args:
+            rv.append(tuple(map((lambda x: "%-4s" % x),args[0:2])))
+            args = args[2:]
+        return rv
+
+    def normal_action(self, args):
+        return args
+
+    maybe_languages = normal_action
 
 class PropagateAnchors(FEZVerb):
     def action(self, _):
