@@ -105,7 +105,6 @@ class Position(Substitute):
                 valuerecords.append(makeValueRecord(valuerecord))
             else:
                 valuerecords.append(None)
-        languages = None # For now
         return [Positioning(inputs, valuerecords,
             precontext = pre,
             postcontext = post,
