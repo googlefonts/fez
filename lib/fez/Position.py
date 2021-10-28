@@ -74,6 +74,7 @@ class Position(Substitute):
     fea_value_record = normal_action
     maybe_languages = normal_action
     gsposes = normal_action
+    valuerecord_number = valuerecord
 
     def fez_value_record(self, args):
         ret = []

@@ -8,7 +8,7 @@ import warnings
 from importlib import import_module
 from fontFeatures import FontFeatures
 from more_itertools import collapse
-from fontFeatures.variableScalar import VariableScalar
+from fontTools.feaLib.variableScalar import VariableScalar
 from lark.visitors import VisitError
 
 
@@ -165,10 +165,17 @@ HELPERS="""
     glyphsuffix: SUFFIXTYPE STARTGLYPHNAME+
     glyphselector: (unicoderange | UNICODEGLYPH | REGEX | BARENAME | CLASSNAME | inlineclass) glyphsuffix*
 
-    valuerecord: SIGNED_NUMBER | fez_value_record | fea_value_record
-    fez_value_record: "<" ( FEZ_VALUE_VERB "=" integer_container )+ ">"
+    valuerecord: valuerecord_number | fez_value_record | fea_value_record
+    valuerecord_number: variable_scalar | basic_valuerecord_number
+    basic_valuerecord_number: SIGNED_NUMBER | NAMEDINTEGER
+    fez_value_record: "<" ( FEZ_VALUE_VERB "=" valuerecord_number )+ ">"
     FEZ_VALUE_VERB: "xAdvance" | "xPlacement" | "yAdvance" | "yPlacement"
-    fea_value_record: "<" integer_container integer_container integer_container integer_container ">"
+    fea_value_record: "<" valuerecord_number valuerecord_number valuerecord_number valuerecord_number ">"
+
+    variable_scalar: "(" (location_spec ":" basic_valuerecord_number)+ ")"
+    location_spec: (axis_location ",")* axis_location
+    axis_location: axis_tag "=" basic_valuerecord_number
+    axis_tag: /[A-Za-z][A-Za-z0-9]{{,3}}/
 
     METRIC: {}
     metric_comparison: METRIC COMPARATOR integer_container
@@ -307,13 +314,6 @@ class FezParser:
     def filterResults(self, results):
         ret = [x for x in collapse(results) if x and not isinstance(x, str)]
         return ret
-
-    def makeVarScalar(self, vsf):
-        vs = VariableScalar(self.font.axes)
-        for value, locationtuple in vsf:
-            location = { locationtuple[0]["barename"]: locationtuple[1] }
-            vs.add_value(location, value)
-        return vs
 
     def expand_statements(self, statements):
         rv = []
@@ -454,3 +454,21 @@ class FEZVerb(lark.Transformer):
         token, suffixes = args[0], args[1:]
         gs = self._glyphselector(token)
         return GlyphSelector(gs, suffixes, (token.line, token.column))
+
+    def axis_tag(self, args):
+        return "%-4s" % args[0].value
+
+    def location_spec(self, args):
+        loc = {}
+        for spec in args:
+            loc[spec.children[0]] = spec.children[1].children[0]
+        return loc
+
+    def variable_scalar(self, args):
+        vs = VariableScalar()
+        vs.axes = self.parser.font.axes
+        args = iter(args)
+        for locspec, value in zip(args, args):
+            vs.add_value(locspec, value.children[0])
+        return vs
+
