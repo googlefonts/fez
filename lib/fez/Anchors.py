@@ -51,6 +51,8 @@ anchors, and using an ``Attach`` statement like the following::
 
 from . import FEZVerb
 import fontFeatures
+from fontTools.feaLib.variableScalar import VariableScalar
+
 
 PARSEOPTS = dict(use_helpers=True)
 
@@ -106,12 +108,36 @@ class Anchors(FEZVerb):
 
 class LoadAnchors(FEZVerb):
     def action(self, _):
-        for glyphname in self.parser.font.exportedGlyphs():
-            g = self.parser.font.default_master.get_glyph_layer(glyphname)
+        if len(self.parser.font.masters) == 1:
+            for glyphname in self.parser.font.exportedGlyphs():
+                self.load_anchor_single_master(glyphname)
+        else:
+            for glyphname in self.parser.font.exportedGlyphs():
+                self.load_anchor_variable(glyphname)
+
+    def load_anchor_single_master(self, glyphname):
+        g = self.parser.font.default_master.get_glyph_layer(glyphname)
+        for a in g.anchors:
+            if glyphname not in self.parser.fontfeatures.anchors:
+                self.parser.fontfeatures.anchors[glyphname] = {}
+            self.parser.fontfeatures.anchors[glyphname][a.name] = (int(a.x), int(a.y))
+
+    def load_anchor_variable(self, glyphname):
+        for m in self.parser.font.masters:
+            g = m.get_glyph_layer(glyphname)
             for a in g.anchors:
                 if glyphname not in self.parser.fontfeatures.anchors:
                     self.parser.fontfeatures.anchors[glyphname] = {}
-                self.parser.fontfeatures.anchors[glyphname][a.name] = (int(a.x), int(a.y))
+                if a.name not in self.parser.fontfeatures.anchors[glyphname]:
+                    x = VariableScalar()
+                    x.axes = self.parser.font.axes
+                    y = VariableScalar()
+                    y.axes = self.parser.font.axes
+                    self.parser.fontfeatures.anchors[glyphname][a.name] = (x,y)
+                this_anchor = self.parser.fontfeatures.anchors[glyphname][a.name]
+                this_anchor[0].add_value(m.location, a.x)
+                this_anchor[1].add_value(m.location, a.y)
+
 
 class Attach(FEZVerb):
     def action(self, args):
