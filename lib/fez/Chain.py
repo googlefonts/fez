@@ -1,6 +1,6 @@
 """
 Chain
-==========
+=====
 
 Chaining rules are created using the ``Chain`` verb. Lookups are differentiated
 from glyph selectors by prepending a ``^``.
@@ -9,6 +9,17 @@ Examples::
 
     Chain glyph1 ^lookup1 glyph2 ^lookup2;
     Chain pre ( glyph1 ^lookup1,^lookup2 glyph2 glyph3 ^lookup3 ) post;
+
+These correspond to the AFDKO syntax::
+
+    sub glyph1' lookup lookup1 glyph2' lookup lookup2;
+    pos pre glyph1' lookup lookup1 lookup lookup2 glyph2' glyph3' lookup lookup3 post;
+
+Whether the rules are AFDKO ``sub`` or ``pos`` rules is resolved by examining the
+rules within the referenced lookups.
+
+Chaining rules, as with any "basic" (substitute/position/attach/chain) rule,
+can be optionally followed by a list of script/language pairs in double angle brackets.
 
 """
 

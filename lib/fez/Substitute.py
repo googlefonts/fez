@@ -8,7 +8,7 @@ forms of this verb:
 - a simple substitution, which simply has a number of glyph
   selectors on each side of an arrow (``->``)
 - a contextual substitution, which wraps the main glyphs to be substituted in
-  parenthesis, and optionally surrounds them with prefix and/or suffix glyphs.
+  parentheses, and optionally surrounds them with prefix and/or suffix glyphs.
 
 Examples::
 
@@ -28,6 +28,12 @@ is equivalent to::
 
 The ``ReverseSubstitute`` verb is equivalent but creates reverse chaining
 substitution rules.
+
+Substitution rules, as with any "basic" (substitute/position/attach/chain) rule,
+can be optionally followed by a list of script/language pairs in double angle brackets::
+
+    Substitute @letter (semicolon) -> space semicolon <<latn/FRA latn/DEU>>;
+
 """
 
 import fontFeatures

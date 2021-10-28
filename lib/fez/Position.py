@@ -26,9 +26,16 @@ Here are examples of each form of the positioning verb::
     # Initial forms will get more space if they have consecutive dotted glyphs
     # and appear after a word-final glyph.
     Position @endofword ( @inits 200 ) @below_dots @medis @below_dots;
+    # Equivalent to AFDKO:
+    #   pos @endofword @inits' 200 @below_dots' @medis' @below_dots';
 
     # Move marks back and up.
     Position @marks <xPlacement=-50 yPlacement=10>;
+    # Equivalent to AFDKO:
+    #   pos @marks <-50 10 0 0>;
+
+Positioning rules, as with any "basic" (substitute/position/attach/chain) rule,
+can be optionally followed by a list of script/language pairs in double angle brackets.
 
 """
 
