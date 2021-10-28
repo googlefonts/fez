@@ -461,7 +461,7 @@ class FEZVerb(lark.Transformer):
     def location_spec(self, args):
         loc = {}
         for spec in args:
-            loc[spec.children[0]] = spec.children[1].children[0]
+            loc[spec.children[0]] = spec.children[1]
         return loc
 
     def variable_scalar(self, args):
@@ -469,6 +469,11 @@ class FEZVerb(lark.Transformer):
         vs.axes = self.parser.font.axes
         args = iter(args)
         for locspec, value in zip(args, args):
-            vs.add_value(locspec, value.children[0])
+            vs.add_value(locspec, value)
         return vs
 
+    def valuerecord_number(self, args):
+        return args[0]
+
+    def basic_valuerecord_number(self, args):
+        return args[0]

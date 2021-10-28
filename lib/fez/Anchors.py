@@ -60,7 +60,7 @@ Anchors_GRAMMAR = """
 ?start: action
 action: glyphselector anchors
 anchors: anchor+
-anchor: BARENAME "<" integer_container integer_container ">"
+anchor: BARENAME "<" valuerecord_number valuerecord_number ">"
 """
 
 Attach_GRAMMAR = """
