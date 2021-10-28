@@ -44,7 +44,7 @@ def test_barename(parser):
 
     def test_barename_string(test_bn):
         s = "BareName %s;" % test_bn
-        a = parser.parseString(s)
+        a = parser.parseString(s, top_is_statements=False)
         assert a == ("BareName", Tree('action', [Token('BARENAME', test_bn)]))
 
     test_barename_string("foo")
@@ -73,7 +73,7 @@ def test_classname(parser):
 
     def test_classname_string(test_bn):
         s = "ClassName %s;" % test_bn
-        a = parser.parseString(s)
+        a = parser.parseString(s, top_is_statements=False)
         assert a == ("ClassName", Tree('action', [Token('CLASSNAME', test_bn)]))
 
     test_classname_string("@foo")
@@ -98,7 +98,7 @@ class InlineClassModule:
 def test_inlineclass(parser):
     s = "InlineClass [a b c @foo];"
     parser.register_plugin(InlineClassModule, "InlineClass")
-    a = parser.parseString(s)
+    a = parser.parseString(s, top_is_statements=False)
     assert a == ('InlineClass', Tree('action', [Token('INLINECLASS', [{'barename': 'a'}, {'barename': 'b'}, {'barename': 'c'}, {'classname': 'foo'}])]))
 
 #################
@@ -124,7 +124,7 @@ def test_glyphselector(parser):
     s = "[foo @bar].sc"
     stmt = "GlyphSelector %s;" % s
     parser.register_plugin(GlyphSelectorModule, "GlyphSelector")
-    a = parser.parseString(stmt)
+    a = parser.parseString(stmt, top_is_statements=False)
     _, (gs,) = a
     assert gs.as_text() == s
 
@@ -151,7 +151,7 @@ class ConjunctionModule:
 def test_classdefinition_conjunctions(parser):
     parser.register_plugin(ConjunctionModule, "Conjunction")
     s = "Conjunction A | B;"
-    (_, a) = parser.parseString(s)
+    (_, a) = parser.parseString(s, top_is_statements=False)
     assert isinstance(a, dict)
     assert a["conjunction"] == "or"
     assert a["left"] == ["A"]

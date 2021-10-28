@@ -290,14 +290,16 @@ class FezParser:
         self.current_file = filename
         return self.parseString(data)
 
-    def parseString(self, s):
+    def parseString(self, s, top_is_statements=True):
         """LoadFEZ features information from a string.
 
         Args:
             s: Layout rules in FEZ format.
         """
         try:
-            rv = self.expand_statements(self.transformer.transform(self.parser.parse(s)))
+            rv = self.transformer.transform(self.parser.parse(s))
+            if top_is_statements:
+                rv = self.expand_statements(rv)
         except VisitError as e:
             raise e.orig_exc
         return rv
