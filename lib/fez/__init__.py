@@ -375,9 +375,12 @@ class FezTransformer(lark.Transformer):
                 ret.append(after_args if len(after_args) > 0 else None)
             else:
                 ret.append(None)
-            # Not calling the transformer action yet allows the wrapping verb
-            # to decide when to call it.
-            verb_ret = (verb, [transformer._THUNK, transformer.action, ret])
+            if transformer.delayed:
+                # Not calling the transformer action yet allows the wrapping verb
+                # to decide when to call it.
+                verb_ret = (verb, [transformer._THUNK, transformer.action, ret])
+            else:
+                verb_ret = (verb, transformer.action(ret))
         # For normal plugins that don't take statements
         elif len(args) == 0 or isinstance(args[0], str):
             tree = requested_plugin.parser.parse(' '.join(args))
@@ -402,6 +405,9 @@ def _UNICODEGLYPH(u):
     return int(u[2:], 16)
 
 class FEZVerb(lark.Transformer):
+
+    # If a verb sets delayed to True, it gets handed an AST, and handles the statements itself.
+    delayed = False
     _THUNK = "__THUNK__"
 
     def __init__(self, parser):

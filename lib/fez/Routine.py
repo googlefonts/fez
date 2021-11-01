@@ -137,8 +137,6 @@ class Routine(FEZVerb):
             rr = fontFeatures.RoutineReference(name = routinename)
             return [rr]
 
-        statements = self.parser.expand_statements(statements)
-
         r = fontFeatures.Routine()
         if routinename:
             r.name = routinename
@@ -160,5 +158,7 @@ class Routine(FEZVerb):
                 r.flags |= f
         r.languages = languages
         if not self.parser.current_feature:
+            import warnings
+            warnings.warn("Adding routine %s" % r.name)
             self.parser.fontfeatures.routines.append(r)
         return [r]

@@ -47,6 +47,8 @@ from . import FEZVerb
 from fontFeatures import Routine, Rule
 
 class Feature(FEZVerb):
+    delayed = True
+
     def FEATURENAME(self, tok):
         return tok.value
 
