@@ -24,7 +24,7 @@ A plugin may make available one or more verbs, so you need to read the plugin's
 documentation to know which verbs are available.
 """
 
-import lark
+from fez import FEZVerb
 
 PARSEOPTS = dict(use_helpers=True)
 
@@ -40,7 +40,7 @@ GRAMMAR = """
 
 VERBS = ["LoadPlugin"]
 
-class LoadPlugin(lark.Transformer):
+class LoadPlugin(FEZVerb):
     def __init__(self, parser):
         self.parser = parser
 
