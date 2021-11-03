@@ -384,7 +384,10 @@ class FezTransformer(lark.Transformer):
         # For normal plugins that don't take statements
         elif len(args) == 0 or isinstance(args[0], str):
             tree = requested_plugin.parser.parse(' '.join(args))
-            verb_ret = (verb, requested_plugin.transformer(self.parser).transform(tree))
+            try:
+                verb_ret = (verb, requested_plugin.transformer(self.parser).transform(tree))
+            except VisitError as e:
+                raise e.orig_exc
         else:
             raise ValueError("Arguments of unknown type: {}".format(type(args)))
 
