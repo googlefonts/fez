@@ -2,7 +2,8 @@
 Anchor Management
 =================
 
-The ``Anchors`` plugin provides the ``Anchors``, ``LoadAnchors`` and ``Attach`` verbs.
+The ``Anchors`` plugin provides the ``Anchors``, ``LoadAnchors``, ``Attach``
+and ``PropagateAnchors`` verbs.
 
 ``Anchors`` takes a glyph name followed by anchor names and
 positions, like so::
@@ -24,7 +25,9 @@ marks to bases::
       Feature mark { Attach &top &_top bases; };
 
 The ``Attach`` verb takes three parameters: a base anchor name, a mark anchor
-name, and a class filter, which is either ``marks``, ``bases`` or ``cursive``.
+name, and a class filter, which is either ``marks``, ``bases``, ``cursive``
+or a glyph selector.
+
 The verb acts by collecting all the glyphs which have anchors defined, and
 filtering them according to their class definition in the ``GDEF`` table.
 In this case, we have asked for ``bases``, so glyph ``A`` will be selected.
@@ -32,6 +35,11 @@ Then it looks for anchor definitions containing the mark anchor name
 (here ``_top``), which will select ``acutecomb``, and writes an attachment
 rule to tie them together. As shown in the example, this
 is the most efficient way of expressing a mark-to-base feature.
+
+This is equivalent to the AFDKO syntax::
+
+        markClass acutecomb <-570 1290> @topmarks;
+        pos base A <679 1600> @topmarks;
 
 Writing a mark-to-mark feature is similar; you just need to define a corresponding
 anchor on the mark, and use the ``marks`` class filter instead of the ``bases``
@@ -47,9 +55,10 @@ anchors, and using an ``Attach`` statement like the following::
             Routine { Attach &entry &exit cursive; } IgnoreMarks;
         };
 
+
 """
 
-from . import FEZVerb
+from . import FEZVerb, GlyphSelector
 import fontFeatures
 from fontTools.feaLib.variableScalar import VariableScalar
 
@@ -67,7 +76,7 @@ anchor: BARENAME "<" valuerecord_number valuerecord_number ">"
 
 Attach_GRAMMAR = """
 ?start: action
-action: "&" BARENAME "&" BARENAME ATTACHTYPE maybe_languages
+action: "&" BARENAME "&" BARENAME (ATTACHTYPE | glyphselector) maybe_languages
 maybe_languages: languages?
 ATTACHTYPE: "marks" | "bases" | "cursive"
 """
@@ -138,7 +147,6 @@ class LoadAnchors(FEZVerb):
                 this_anchor[0].add_value(m.location, a.x)
                 this_anchor[1].add_value(m.location, a.y)
 
-
 class Attach(FEZVerb):
     def action(self, args):
         (aFrom, aTo, attachtype, languages) = args
@@ -146,6 +154,10 @@ class Attach(FEZVerb):
         bases = {}
         marks = {}
         catcache = {}
+        if isinstance(attachtype, GlyphSelector):
+            glyph_filter = attachtype.resolve(self.parser.fontfeatures, self.parser.font)
+        else:
+            glyph_filter = None
         def _category(k):
             if k not in catcache:
                 catcache[k] = self.parser.fontfeatures.glyphclasses.get(k, self.parser.font.glyphs[k].category)
@@ -156,7 +168,13 @@ class Attach(FEZVerb):
                 bases[k] = v[aFrom]
             if aTo in v:
                 marks[k] = v[aTo]
-            if attachtype == "marks":
+            if glyph_filter:
+                bases = {
+                    k: v
+                    for k, v in bases.items()
+                    if k in glyph_filter
+                }
+            elif attachtype == "marks":
                 bases = {
                     k: v
                     for k, v in bases.items()
