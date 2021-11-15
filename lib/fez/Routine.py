@@ -127,6 +127,7 @@ class Routine(FEZVerb):
     def action(self, args):
         (routinename, statements, flags_languages) = args
         flags, languages = flags_languages
+        statements = self.parser.expand_statements(statements)
 
         if routinename is not None:
             routinename = routinename[0].value
