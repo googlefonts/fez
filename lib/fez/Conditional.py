@@ -21,7 +21,7 @@ PARSEOPTS = dict(use_helpers=True)
 
 GRAMMAR = """
 boolean_condition: comparison | (boolean_term | not_boolean_term)
-boolean_term: integer_container COMPARATOR integer_container
+boolean_term: integer_container COMPARATOR integer_container | integer_container
 not_boolean_term: "not" boolean_term
 comparison: (boolean_term | not_boolean_term) AND_OR (boolean_term | not_boolean_term)
 AND_OR: ("&" | "|")
@@ -55,6 +55,8 @@ class If(FEZVerb):
             raise ValueError("Unrecognized comparator")
 
     def boolean_term(self, args):
+        if len(args) == 1:
+            return bool(args[0])
         (l, comparator, r) = args
         return compare(l, comparator, r)
 
