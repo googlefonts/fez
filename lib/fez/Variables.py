@@ -2,8 +2,8 @@
 Variables
 =========
 
-FEZ allows you to give a name to any number in your feature file. These names,
-called variables, begin with the dollar sign, and you to more easily understand a
+FEZ allows you to give a name to any number or string in your feature file. These
+names, called variables, begin with the dollar sign, and you to more easily understand a
 rule by acting as a form of documentation. They also you allows to place all the "magic
 numbers" together in your file so that they can be more easily tweaked later.
 
@@ -26,6 +26,14 @@ you can say::
 
     Position @tall_bases (@top_marks <yPlacement=$tall_base_mark_adjustment>);
 
+You can also store a single glyph name in a variable and use it as a glyph
+selector::
+
+    Set $virama = "dvVirama";
+
+    Substitute $virama @consonants -> @consonants.conjunct;
+
+This is most helpful when 
 """
 
 import lark
@@ -34,7 +42,10 @@ PARSEOPTS = dict(use_helpers=True)
 
 GRAMMAR = """
     ?start: action
-    action: BARENAME "=" SIGNED_NUMBER
+    action: "$" BARENAME "=" value
+    value:  number_value | string_value
+    number_value: SIGNED_NUMBER
+    string_value: ESCAPED_STRING
 
     %ignore WS
 """
@@ -46,5 +57,14 @@ class Set(lark.Transformer):
         self.parser = parser
 
     def action(self, args):
-        self.parser.variables[args[0].value] = args[1].value
-        return (args[0].value, args[1].value)
+        self.parser.variables[args[0].value] = args[1]
+        return (args[0].value, args[1])
+
+    def value(self, args):
+        return args[0]
+
+    def string_value(self, args):
+        return args[0][1:-1]
+
+    def number_value(self, args):
+        return int(args[0].value)

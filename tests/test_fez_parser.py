@@ -190,3 +190,45 @@ def test_substitute2(parser):
     assert alltrim(parser.fontfeatures.asFea()) == alltrim(
         "lookup Routine_1 { ; sub [a b] by [c d]; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
     )
+
+#############
+# Variables #
+#############
+def test_integer_variable(parser):
+    s = "Set $a = 123; Feature kern { Position (b <xAdvance=$a>); };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; pos b 123; } Routine_1; feature kern { lookup Routine_1; } kern;"
+    )
+
+
+def test_glyph_variable(parser):
+    s = "Set $a = 123; Set $glyph = \"b\"; Feature kern { Position ($glyph <xAdvance=$a>); };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; pos b 123; } Routine_1; feature kern { lookup Routine_1; } kern;"
+    )
+
+
+def test_wrong_context(parser):
+    s = "Set $a = 123; Set $glyph = \"b\"; Feature kern { Position ($a <xAdvance=$a>); };"
+    with pytest.raises(ValueError):
+        parser.parseString(s)
+
+
+def test_boolean_variable_true(parser):
+    s = "Set $a = 1; Feature rlig { If $a { Substitute a -> b; }; };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; sub a by b; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
+    )
+
+
+def test_boolean_variable_false(parser):
+    s = "Set $a = 0; Feature rlig { If $a { Substitute a -> b; }; If not $a { Substitute c -> d; }; };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; sub c by d; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
+    )
+
+

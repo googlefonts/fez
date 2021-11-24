@@ -163,11 +163,12 @@ HELPERS="""
 
     SUFFIXTYPE: ("." | "~")
     glyphsuffix: SUFFIXTYPE STARTGLYPHNAME+
-    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | BARENAME | CLASSNAME | inlineclass) glyphsuffix*
+    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | BARENAME | CLASSNAME | inlineclass | glyph_variable) glyphsuffix*
+    glyph_variable: VARIABLE
 
     valuerecord: valuerecord_number | fez_value_record | fea_value_record
     valuerecord_number: variable_scalar | basic_valuerecord_number
-    basic_valuerecord_number: SIGNED_NUMBER | NAMEDINTEGER
+    basic_valuerecord_number: integer_container
     fez_value_record: "<" ( FEZ_VALUE_VERB "=" valuerecord_number )+ ">"
     FEZ_VALUE_VERB: "xAdvance" | "xPlacement" | "yAdvance" | "yPlacement"
     fea_value_record: "<" valuerecord_number valuerecord_number valuerecord_number valuerecord_number ">"
@@ -181,8 +182,9 @@ HELPERS="""
     metric_comparison: METRIC COMPARATOR integer_container
     GLYPHVALUE: METRIC "[" BARENAME "]"
 
-    NAMEDINTEGER: "$" BARENAME
-    integer_container: NAMEDINTEGER | GLYPHVALUE | SIGNED_NUMBER
+    VARIABLE: "$" BARENAME
+    integer_variable: VARIABLE
+    integer_container: integer_variable | GLYPHVALUE | SIGNED_NUMBER
     COMPARATOR: ">=" | "<=" | "==" | "<" | ">"
 
     languages: "<<" (SCRIPT "/" LANG)+ ">>"
@@ -422,12 +424,33 @@ class FEZVerb(lark.Transformer):
     def SIGNED_NUMBER(self, tok):
         return int(tok)
 
-    def NAMEDINTEGER(self, tok):
-        name = tok[1:] # all begin with $. but this doesn't match $1, $2 etc.
-        if name in self.parser.variables:
-            return self.parser.variables[name]
+    def VARIABLE(self, tok):
+        return tok[1:]
+
+    def integer_variable(self, args):
+        name = args[0]
+        if name not in self.parser.variables:
+            raise ValueError("Undefined variable: $%s" % name)
+        value = self.parser.variables[name]
+        if isinstance(value, str):
+            # Hmm. This is the wrong kind of thing. Can we make it the right kind?
+            try:
+                intvalue = int(value)
+                return intvalue
+            except ValueError as e:
+                raise ValueError("Couldn't make string variable $%s (\"%s\") into an integer" % (name, value))
         else:
-            return ValueError("Undefined variable: %s")
+            return value
+
+    def glyph_variable(self, args):
+        name = args[0]
+        if name not in self.parser.variables:
+            raise ValueError("Undefined variable: $%s" % name)
+        value = self.parser.variables[name]
+        if not isinstance(value, str):
+            raise ValueError("Variable $%s (=%s) used as a glyph name, but it wasn't one" % (name, value))
+        else:
+            return lark.Token("BARENAME", value)
 
     def GLYPHVALUE(self, args):
         (metric, glyph) = args
