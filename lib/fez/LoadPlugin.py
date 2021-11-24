@@ -41,6 +41,8 @@ GRAMMAR = """
 VERBS = ["LoadPlugin"]
 
 class LoadPlugin(FEZVerb):
+    immediate = True
+
     def __init__(self, parser):
         self.parser = parser
 

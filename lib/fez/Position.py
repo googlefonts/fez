@@ -59,10 +59,11 @@ VERBS = ["Position"]
 
 def makeValueRecord(valuerecord):
     if not isinstance(valuerecord, dict):
+        valuerecord = [v.resolve_as_integer() for v in valuerecord]
         return ValueRecord(*valuerecord) # Traditional -> list
     v = ValueRecord()
     for k in valuerecord["members"]:
-        setattr(v,k["dimension"],k["position"])
+        setattr(v,k["dimension"],k["position"].resolve_as_integer())
     return v
 
 class Position(Substitute):

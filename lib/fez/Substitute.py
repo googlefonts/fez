@@ -105,7 +105,6 @@ class Substitute(FEZVerb):
 
     def action(self, args):
         (l, r, languages, pre, post) = args[0]
-
         inputs  = [g.resolve(self.parser.fontfeatures, self.parser.font) for g in l]
         pre     = [g.resolve(self.parser.fontfeatures, self.parser.font) for g in pre]
         post     = [g.resolve(self.parser.fontfeatures, self.parser.font) for g in post]

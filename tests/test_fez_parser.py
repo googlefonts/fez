@@ -37,15 +37,16 @@ class BareNameModule:
     PARSEOPTS = dict(use_helpers=True)
 
     class BareName(FEZVerb):
-        pass
+        def action(self, args):
+            return args
 
 def test_barename(parser):
     parser.register_plugin(BareNameModule, "BareName")
 
     def test_barename_string(test_bn):
         s = "BareName %s;" % test_bn
-        a = parser.parseString(s, top_is_statements=False)
-        assert a == ("BareName", Tree('action', [Token('BARENAME', test_bn)]))
+        a = parser.parseString(s)
+        assert a == [Token('BARENAME', test_bn)]
 
     test_barename_string("foo")
     test_barename_string("CH_YEf1")
@@ -66,15 +67,16 @@ class ClassNameModule:
     PARSEOPTS = dict(use_helpers=True)
 
     class ClassName(FEZVerb):
-        pass
+        def action(self, args):
+            return args
 
 def test_classname(parser):
     parser.register_plugin(ClassNameModule, "ClassName")
 
     def test_classname_string(test_bn):
         s = "ClassName %s;" % test_bn
-        a = parser.parseString(s, top_is_statements=False)
-        assert a == ("ClassName", Tree('action', [Token('CLASSNAME', test_bn)]))
+        a = parser.parseString(s)
+        assert a == [Token('CLASSNAME', test_bn)]
 
     test_classname_string("@foo")
 
@@ -93,13 +95,14 @@ class InlineClassModule:
     PARSEOPTS = dict(use_helpers=True)
 
     class InlineClass(FEZVerb):
-        pass
+        def action(self, args):
+            return args
 
 def test_inlineclass(parser):
     s = "InlineClass [a b c @foo];"
     parser.register_plugin(InlineClassModule, "InlineClass")
-    a = parser.parseString(s, top_is_statements=False)
-    assert a == ('InlineClass', Tree('action', [Token('INLINECLASS', [{'barename': 'a'}, {'barename': 'b'}, {'barename': 'c'}, {'classname': 'foo'}])]))
+    a = parser.parseString(s)
+    assert a == [Token('INLINECLASS', [{'barename': 'a'}, {'barename': 'b'}, {'barename': 'c'}, {'classname': 'foo'}])]
 
 #################
 # GlyphSelector #
@@ -124,8 +127,8 @@ def test_glyphselector(parser):
     s = "[foo @bar].sc"
     stmt = "GlyphSelector %s;" % s
     parser.register_plugin(GlyphSelectorModule, "GlyphSelector")
-    a = parser.parseString(stmt, top_is_statements=False)
-    _, (gs,) = a
+    a = parser.parseString(stmt)
+    (gs,) = a
     assert gs.as_text() == s
 
 ###############
@@ -133,29 +136,6 @@ def test_glyphselector(parser):
 ###############
 
 from fez import ClassDefinition
-
-class ConjunctionModule:
-    GRAMMAR = ClassDefinition.GRAMMAR
-
-    Conjunction_GRAMMAR = """
-    ?start: conjunction
-    """
-
-    VERBS = ["Conjunction"]
-
-    PARSEOPTS = dict(use_helpers=True)
-
-    class Conjunction(ClassDefinition.DefineClass):
-        pass
-
-def test_classdefinition_conjunctions(parser):
-    parser.register_plugin(ConjunctionModule, "Conjunction")
-    s = "Conjunction A | B;"
-    (_, a) = parser.parseString(s, top_is_statements=False)
-    assert isinstance(a, dict)
-    assert a["conjunction"] == "or"
-    assert a["left"] == ["A"]
-    assert a["right"] == ["B"]
 
 def test_classdefinition_with_conjunction(parser):
     s = """
@@ -189,6 +169,16 @@ def test_substitute2(parser):
     parser.parseString(s)
     assert alltrim(parser.fontfeatures.asFea()) == alltrim(
         "lookup Routine_1 { ; sub [a b] by [c d]; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
+    )
+
+###############
+# Positioning #
+###############
+def test_positioning_simple(parser):
+    s = "Feature kern { Position (b <xAdvance=123>); };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; pos b 123; } Routine_1; feature kern { lookup Routine_1; } kern;"
     )
 
 #############
@@ -231,4 +221,41 @@ def test_boolean_variable_false(parser):
         "lookup Routine_1 { ; sub c by d; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
     )
 
+###########
+# Routine #
+###########
+def test_routine(parser):
+    s = "Feature rlig { Routine foo { Substitute a -> b; } IgnoreMarks <<mym2/dflt>>; };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup foo { lookupflag IgnoreMarks; ; sub a by b; } foo; feature rlig { script mym2; language dflt; lookup foo; } rlig;"
+    )
+
+def test_routine2(parser):
+    s = "Routine foo { Substitute a -> b; } IgnoreMarks;"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup foo { lookupflag IgnoreMarks; ; sub a by b; } foo;"
+    )
+
+
+
+################
+# Glyph values #
+################
+def test_glyph_value(parser):
+    s = "Set $b_width = width[b];"
+    parser.parseString(s)
+    assert parser.variables["b_width"].resolve_as_integer() == 504;
+
+
+################
+# For loops    #
+################
+def test_for_loop(parser):
+    s = "Feature rlig { For $g in /^[a-z]$/ { If width[$g] >= width[w] { Substitute $g -> $g.sc; }; }; };"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "lookup Routine_1 { ; sub m by m.sc; sub w by w.sc; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
+    )
 

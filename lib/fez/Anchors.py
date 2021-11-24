@@ -111,7 +111,7 @@ class Anchors(FEZVerb):
                 self.parser.fontfeatures.anchors[g] = {}
             for a in anchors:
                 (name, x, y) = a
-                self.parser.fontfeatures.anchors[g][name] = (x, y)
+                self.parser.fontfeatures.anchors[g][name] = (x.resolve_as_integer(), y.resolve_as_integer())
 
         return []
 

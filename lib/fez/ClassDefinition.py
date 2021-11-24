@@ -158,12 +158,11 @@ will take any glyph selector and display its contents on standard error.
 
 import lark
 import re
-from glyphtools import get_glyph_metrics, bin_glyphs_by_metric
+from glyphtools import bin_glyphs_by_metric
 
 import warnings
 
 from . import FEZVerb
-from . import TESTVALUE_METRICS
 from .util import compare
 from fez import GlyphSelector
 
@@ -211,20 +210,11 @@ class DefineClass(FEZVerb):
         (barename,) = args
         return {"predicate": "category", "value": barename.value, "inverted": False}
 
-    def _get_metrics(self, glyph, metric=None):
-        metrics = get_glyph_metrics(self.parser.font, glyph)
-        if metric is not None:
-            if metric not in TESTVALUE_METRICS:
-                raise ValueError("Unknown metric '%s'" % metric)
-            else:
-                return metrics[metric]
-        else:
-            return metrics
-
     def metric_comparison(self, args):
         (metric, comparator, comp_value) = args
         metric = metric.value
         comparator = comparator.value
+        comp_value = comp_value.resolve_as_integer()
         return lambda metrics, glyphname: compare(metrics[metric], comparator, comp_value)
 
     def predicate(self, args):

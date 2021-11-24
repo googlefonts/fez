@@ -31,6 +31,8 @@ def _file_to_string_or_error(parser, filename):
     raise ValueError("Could not include file %s" % filename)
 
 class Include(FEZVerb):
+    immediate = True
+    
     def ESCAPED_STRING(self, tok):
         return tok.value[1:-1] # slice removes "'s
 

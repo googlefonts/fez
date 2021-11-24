@@ -10,6 +10,7 @@ from fontFeatures import FontFeatures
 from more_itertools import collapse
 from fontTools.feaLib.variableScalar import VariableScalar
 from lark.visitors import VisitError
+from glyphtools import get_glyph_metrics
 
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
@@ -29,7 +30,9 @@ class GlyphSelector:
         return "GlyphSelector<{}>".format(self.as_text())
 
     def as_text(self):
-        if "barename" in self.selector:
+        if "variable" in self.selector:
+            returned = "$" + self.selector["variable"].token.value
+        elif "barename" in self.selector:
             returned = self.selector["barename"]
         elif "classname" in self.selector:
             returned = "@" + self.selector["classname"]
@@ -64,7 +67,9 @@ class GlyphSelector:
         returned = []
         # assert isinstance(font, Font)
         glyphs = font.exportedGlyphs()
-        if "barename" in self.selector:
+        if "variable" in self.selector:
+            returned = [self.selector["variable"].resolve_as_glyph()]
+        elif "barename" in self.selector:
             returned = [self.selector["barename"]]
         elif "unicodeglyph" in self.selector:
             cp = self.selector["unicodeglyph"]
@@ -128,6 +133,69 @@ class GlyphSelector:
                 )
         return list(returned)
 
+
+class ScalarOrVariable:
+    def __init__(self, token, parser, metric=None):
+        self.token = token
+        self.parser = parser
+        self.metric = metric
+        if hasattr(self.token, "line"):
+            self.line = self.token.line
+        if hasattr(self.token, "column"):
+            self.column = self.token.column
+        if isinstance(self.token, lark.Token):
+            assert self.token.type == "VARIABLE"
+        else:
+            assert isinstance(self.token, (int, float, VariableScalar))
+
+    def resolve_as_integer(self):
+        if isinstance(self.token, VariableScalar):
+            for k,v in self.token.values.items():
+                self.token.values[k] = v.resolve_as_integer()
+            return self.token
+        if not isinstance(self.token, lark.Token):
+            return self.token
+
+        assert self.token.type == "VARIABLE"
+        name = self.token.value
+
+        if name not in self.parser.variables:
+            raise ValueError("Undefined variable: $%s" % name)
+
+        value = self.parser.variables[name]
+
+        if self.metric:
+            return get_glyph_metrics(self.parser.font, value)[self.metric]
+
+        if isinstance(value, ScalarOrVariable): # Of course variables can also point to variables
+            return value.resolve_as_integer()
+        if isinstance(value, str):
+            # Hmm. This is the wrong kind of thing. Can we make it the right kind?
+            try:
+                intvalue = int(value)
+                return intvalue
+            except ValueError as e:
+                raise ValueError("Couldn't make string variable $%s (\"%s\") into an integer" % (name, value))
+        else:
+            return value
+
+    def resolve_as_glyph(self):
+        assert isinstance(self.token, lark.Token), "Integer value used as glyph name (FEZ grammar bug)"
+        name = self.token.value
+        if name not in self.parser.variables:
+            raise ValueError("Undefined variable: $%s" % name)
+        value = self.parser.variables[name]
+        if isinstance(value, ScalarOrVariable): # Of course variables can also point to variables
+            try:
+                return value.resolve_as_glyph()
+            except AssertionError as e:
+                raise ValueError("Variable $%s (=%s) used as a glyph name, but it wasn't one" % (name, value))
+        if not isinstance(value, str):
+            raise ValueError("Variable $%s (=%s) used as a glyph name, but it wasn't one" % (name, value))
+        else:
+            return value
+
+
 GRAMMAR="""
     ?start: statement+
 
@@ -146,7 +214,7 @@ HELPERS="""
     arg: ARG WS*
 
     VERB: /[A-Z]/ (LETTER | DIGIT | "_")+
-    ARG: (/[^\s;]+/)
+    ARG: (/[^\\s;]+/)
 
     STARTGLYPHNAME: LETTER | DIGIT | "_"
     MIDGLYPHNAME: STARTGLYPHNAME | "." | "-"
@@ -154,7 +222,7 @@ HELPERS="""
     inlineclass: "[" (WS* (CLASSNAME | BARENAME | REGEX | UNICODEGLYPH))* "]"
     CLASSNAME: "@" STARTGLYPHNAME+
 
-    ANYTHING: /[^\s]/
+    ANYTHING: /[^\\s]/
     REGEX: "/" ANYTHING* "/"
 
     HEXDIGIT: /[0-9A-Fa-f]/
@@ -163,7 +231,8 @@ HELPERS="""
 
     SUFFIXTYPE: ("." | "~")
     glyphsuffix: SUFFIXTYPE STARTGLYPHNAME+
-    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | BARENAME | CLASSNAME | inlineclass | glyph_variable) glyphsuffix*
+    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | CLASSNAME | inlineclass | singleglyph) glyphsuffix*
+    singleglyph: BARENAME | glyph_variable
     glyph_variable: VARIABLE
 
     valuerecord: valuerecord_number | fez_value_record | fea_value_record
@@ -180,11 +249,12 @@ HELPERS="""
 
     METRIC: {}
     metric_comparison: METRIC COMPARATOR integer_container
-    GLYPHVALUE: METRIC "[" BARENAME "]"
+    constant_glyphvalue: METRIC "[" BARENAME "]"
+    variable_glyphvalue: METRIC "[" glyph_variable "]"
 
-    VARIABLE: "$" BARENAME
-    integer_variable: VARIABLE
-    integer_container: integer_variable | GLYPHVALUE | SIGNED_NUMBER
+    VARIABLE: "$" STARTGLYPHNAME+
+    integer_container: integer_constant | VARIABLE | variable_glyphvalue
+    integer_constant: constant_glyphvalue | SIGNED_NUMBER
     COMPARATOR: ">=" | "<=" | "==" | "<" | ">"
 
     languages: "<<" (SCRIPT "/" LANG)+ ">>"
@@ -215,6 +285,7 @@ class FezParser:
         "LoadPlugin",
         "ClassDefinition",
         "Conditional",
+        "ForLoop",
         "Feature",
         "Substitute",
         "Position",
@@ -326,8 +397,8 @@ class FezParser:
             if not args:
                 continue
             if args[0] == FEZVerb._THUNK:
-                thunk, action, action_args = args
-                rv.extend(action(action_args))
+                thunk, callback = args
+                rv.extend(callback())
             else:
                 rv.extend(args)
         return rv
@@ -342,7 +413,7 @@ class FezTransformer(lark.Transformer):
 
     def statement(self, args):
         verb, args = args
-        #print("FezTransformer.statement", verb, args)
+        # print("FezTransformer.statement", verb, args)
         if verb not in self.parser.plugins:
             warnings.warn("Unknown verb: %s" % verb)
             return (verb, args)
@@ -362,7 +433,7 @@ class FezTransformer(lark.Transformer):
             ret = []
             if before_tree:
                 try:
-                    before_args = transformer.transform(before_tree)
+                    before_args = (verb, [transformer._THUNK, lambda : transformer.transform(before_tree)])
                 except VisitError as e:
                     raise e.orig_exc
                 ret.insert(0, before_args if len(before_args) > 0 else None)
@@ -371,23 +442,22 @@ class FezTransformer(lark.Transformer):
             ret.append(statements)
             if after_tree:
                 try:
-                    after_args = transformer.transform(after_tree)
+                    after_args = (verb, [transformer._THUNK, lambda : transformer.transform(after_tree)])
                 except VisitError as e:
                     raise e.orig_exc
                 ret.append(after_args if len(after_args) > 0 else None)
             else:
                 ret.append(None)
-            if transformer.delayed:
-                # Not calling the transformer action yet allows the wrapping verb
-                # to decide when to call it.
-                verb_ret = (verb, [transformer._THUNK, transformer.action, ret])
-            else:
-                verb_ret = (verb, transformer.action(ret))
+            verb_ret = (verb, [transformer._THUNK, lambda: transformer.action(ret)])
         # For normal plugins that don't take statements
         elif len(args) == 0 or isinstance(args[0], str):
             tree = requested_plugin.parser.parse(' '.join(args))
             try:
-                verb_ret = (verb, requested_plugin.transformer(self.parser).transform(tree))
+                transformer = requested_plugin.transformer(self.parser)
+                if transformer.immediate:
+                    verb_ret = (verb, requested_plugin.transformer(self.parser).transform(tree))
+                else:
+                    verb_ret = (verb, [transformer._THUNK, lambda : transformer.transform(tree) ])
             except VisitError as e:
                 raise e.orig_exc
         else:
@@ -410,9 +480,7 @@ def _UNICODEGLYPH(u):
     return int(u[2:], 16)
 
 class FEZVerb(lark.Transformer):
-
-    # If a verb sets delayed to True, it gets handed an AST, and handles the statements itself.
-    delayed = False
+    immediate = False
     _THUNK = "__THUNK__"
 
     def __init__(self, parser):
@@ -425,44 +493,43 @@ class FEZVerb(lark.Transformer):
         return int(tok)
 
     def VARIABLE(self, tok):
-        return tok[1:]
+        return lark.Token("VARIABLE", tok[1:])
 
-    def integer_variable(self, args):
-        name = args[0]
-        if name not in self.parser.variables:
-            raise ValueError("Undefined variable: $%s" % name)
-        value = self.parser.variables[name]
-        if isinstance(value, str):
-            # Hmm. This is the wrong kind of thing. Can we make it the right kind?
-            try:
-                intvalue = int(value)
-                return intvalue
-            except ValueError as e:
-                raise ValueError("Couldn't make string variable $%s (\"%s\") into an integer" % (name, value))
-        else:
-            return value
+    def singleglyph(self, args):
+        return args[0]
 
-    def glyph_variable(self, args):
-        name = args[0]
-        if name not in self.parser.variables:
-            raise ValueError("Undefined variable: $%s" % name)
-        value = self.parser.variables[name]
-        if not isinstance(value, str):
-            raise ValueError("Variable $%s (=%s) used as a glyph name, but it wasn't one" % (name, value))
-        else:
-            return lark.Token("BARENAME", value)
+    def integer_constant(self, args):
+        return int(args[0])
 
-    def GLYPHVALUE(self, args):
+    def constant_glyphvalue(self, args):
         (metric, glyph) = args
-        return self._get_metrics(glyph, metric)
+        return self._get_metrics(glyph.value, metric.value)
+
+    def variable_glyphvalue(self, args):
+        (metric, glyph) = args
+        return ScalarOrVariable(glyph.token, self.parser, metric=metric.value)
+
+    def _get_metrics(self, glyph, metric=None):
+        metrics = get_glyph_metrics(self.parser.font, glyph)
+        if metric is not None:
+            if metric not in TESTVALUE_METRICS:
+                raise ValueError("Unknown metric '%s'" % metric)
+            else:
+                return metrics[metric]
+        else:
+            return metrics
 
     def glyphsuffix(self, args):
         (suffixtype, suffix) = args[0].value, "".join([a.value for a in args[1:]])
         return dict(suffixtype=suffixtype, suffix=suffix)
 
     def integer_container(self, args):
-        (i,) = args
-        return int(i)
+        if isinstance(args[0], ScalarOrVariable): # variable metric
+            return args[0]
+        return ScalarOrVariable(args[0], self.parser)
+
+    def glyph_variable(self, args):
+        return ScalarOrVariable(args[0], self.parser)
 
     def unicoderange(self, args):
         return lark.Token("UNICODERANGE", range(_UNICODEGLYPH(args[0].value), _UNICODEGLYPH(args[1].value)+1), args[0].pos_in_stream)
@@ -471,6 +538,8 @@ class FEZVerb(lark.Transformer):
         return lark.Token("INLINECLASS", [self._glyphselector(t) for t in args if t.type != "WS"])
 
     def _glyphselector(self, token):
+        if isinstance(token, ScalarOrVariable):
+            return {"variable": token}
         if token.type == "CLASSNAME":
             val = token.value[1:]
         elif token.type == "REGEX":
@@ -493,7 +562,8 @@ class FEZVerb(lark.Transformer):
     def location_spec(self, args):
         loc = {}
         for spec in args:
-            loc[spec.children[0]] = spec.children[1]
+             # XXX Parse-time resolution of locations is wrong
+            loc[spec.children[0]] = spec.children[1].resolve_as_integer()
         return loc
 
     def variable_scalar(self, args):
@@ -502,7 +572,7 @@ class FEZVerb(lark.Transformer):
         args = iter(args)
         for locspec, value in zip(args, args):
             vs.add_value(locspec, value)
-        return vs
+        return ScalarOrVariable(vs, self.parser)
 
     def valuerecord_number(self, args):
         return args[0]

@@ -26,7 +26,7 @@ def test_variable_scalar():
     parser.font = test_font
     transformer = FEZVerb(parser)
     try:
-        scalar = transformer.transform(parser.parse(s))
+        scalar = transformer.transform(parser.parse(s)).resolve_as_integer()
     except VisitError as e:
         raise e.orig_exc
     assert scalar.get_deltas_and_supports() == (

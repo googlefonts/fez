@@ -57,7 +57,7 @@ class Feature(FEZVerb):
 
     def action(self, args):
         (featurename, statements, _) = args
-        featurename = featurename[0]
+        featurename = self.parser.expand_statements(featurename)[0]
 
         self.parser.current_feature = featurename
 

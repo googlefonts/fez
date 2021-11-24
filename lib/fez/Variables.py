@@ -33,10 +33,13 @@ selector::
 
     Substitute $virama @consonants -> @consonants.conjunct;
 
-This is most helpful when 
+This is most helpful when combined with the ``For`` loop.
 """
 
+from . import FEZVerb
 import lark
+from glyphtools import get_glyph_metrics, bin_glyphs_by_metric
+from . import TESTVALUE_METRICS
 
 PARSEOPTS = dict(use_helpers=True)
 
@@ -44,7 +47,7 @@ GRAMMAR = """
     ?start: action
     action: "$" BARENAME "=" value
     value:  number_value | string_value
-    number_value: SIGNED_NUMBER
+    number_value: integer_container
     string_value: ESCAPED_STRING
 
     %ignore WS
@@ -52,7 +55,7 @@ GRAMMAR = """
 
 VERBS = ["Set"]
 
-class Set(lark.Transformer):
+class Set(FEZVerb):
     def __init__(self, parser):
         self.parser = parser
 
@@ -67,4 +70,4 @@ class Set(lark.Transformer):
         return args[0][1:-1]
 
     def number_value(self, args):
-        return int(args[0].value)
+        return args[0]

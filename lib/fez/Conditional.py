@@ -40,8 +40,6 @@ beforebrace: boolean_condition
 VERBS = ["If"]
 
 class If(FEZVerb):
-    delayed = True
-
     def __init__(self, parser):
         self.parser = parser
 
@@ -56,9 +54,9 @@ class If(FEZVerb):
 
     def boolean_term(self, args):
         if len(args) == 1:
-            return bool(args[0])
+            return bool(args[0].resolve_as_integer())
         (l, comparator, r) = args
-        return compare(l, comparator, r)
+        return compare(l.resolve_as_integer(), comparator, r.resolve_as_integer())
 
     def boolean_condition(self, args):
         return args[0]
@@ -69,6 +67,7 @@ class If(FEZVerb):
 
     def action(self, args):
         (boolean, statements, _) = args
+        boolean = self.parser.expand_statements(boolean)
         if bool(boolean[0]):
             return self.parser.expand_statements(statements)
         else:
