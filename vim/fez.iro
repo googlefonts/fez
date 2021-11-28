@@ -1,0 +1,158 @@
+
+name                   = FEZ
+file_extensions []     = fez;
+
+__KEYWORDS \= \b(LoadPlugin|DefineClass|Feature|Routine|For|If|Swap|Substitute|Position)\b
+
+################################################################
+## Styles
+################################################################
+
+styles [] {
+
+.comment : style {
+   color                 = light_green
+   italic                = true
+   ace_scope             = comment
+   textmate_scope        = comment
+   pygments_scope        = Comment
+}
+
+.keyword : style {
+   color     = cyan
+   ace_scope             = keyword
+   textmate_scope        = keyword
+   pygments_scope        = Keyword
+}
+
+.numeric : style {
+   color                 = gold
+   ace_scope             = constant.numeric
+   textmate_scope        = constant.numeric
+   pygments_scope        = Number
+}
+
+
+.regex : style {
+   color                 = light_blue
+   ace_scope             = constant.numeric
+   textmate_scope        = string.regexp
+   pygments_scope        = Number
+}
+
+.punctuation : style {
+   color     = red_2
+   ace_scope             = punctuation
+   textmate_scope        = punctuation
+   pygments_scope        = Punctuation
+}
+
+.text : style {
+   color                 = brown
+   ace_scope             = text
+   textmate_scope        = text
+   pygments_scope        = String
+}
+
+.illegal : style {
+   color                 = white
+   background_color      = red
+   ace_scope             = invalid
+   textmate_scope        = invalid
+   pygments_scope        = Generic.Error
+}
+
+.variable: style {
+   color  = blue
+   textmate_scope = variable.other
+}
+
+}
+
+#################################################
+## Parse contexts
+#################################################
+
+contexts [] {
+
+##############################################
+## Main Context - Entry point context
+##############################################
+
+main : context {
+
+   : pattern {
+      regex          \= $${__KEYWORDS}
+      styles []       = .keyword;
+   }
+   
+   : pattern {
+      regex \= (U\+[0-9a-fA-F]+)
+      styles [] = .numeric;
+      }
+   
+   : pattern {
+      regex \= (/[^\/]+/)
+      styles [] = .regex;
+      }
+
+   : include "numeric" ;
+   
+   : inline_push {
+      regex          \= (\{)
+      styles []       = .punctuation;
+      : pop {  
+         regex       \= (\})
+         styles []    = .punctuation;
+      }
+      : include "main" ;
+   }
+   
+   : pattern {
+      regex          \= (@\w+|\$\w+)
+      styles []       = .variable;
+   }
+   
+   : pattern {
+      regex          \= ([;\[\]])
+      styles []       = .punctuation;
+   }
+   
+   : inline_push {
+      regex          \= (\")
+      styles []       = .punctuation;
+      default_style   = .text
+      : pop {
+         regex       \= (\")
+         styles []    = .punctuation;
+      }
+   }
+
+   : pattern {
+      regex          \= (#.*)
+      styles []       = .comment;
+   }
+   
+   #: pattern {
+   #   regex          \= ([^\s])
+   #   styles []       = .illegal;
+   #}
+   
+}
+
+#################################################
+## End of Contexts
+#################################################
+
+###########################################
+## Numeric Context
+###########################################
+
+numeric : context {
+   : pattern {
+      regex          \= (\b\d+)
+      styles []       = .numeric;
+   }
+}
+
+}
