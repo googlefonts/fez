@@ -75,20 +75,29 @@ class GlyphSelector:
             cp = self.selector["unicodeglyph"]
             glyph = font.unicode_map.get(cp, None)
             if not glyph:
-                raise ValueError(
-                    "Font does not contain glyph for U+%04X (at %s)"
-                    % (cp, self.location)
-                )
-            returned = [glyph]
+                if not mustExist:
+                    returned = []
+                else:
+                    raise ValueError(
+                        "Font does not contain glyph for U+%04X (at %s)"
+                        % (cp, self.location)
+                    )
+            else:
+                returned = [glyph]
         elif "unicoderange" in self.selector:
             returned = list(
                 collapse(
                     [
-                        GlyphSelector({"unicodeglyph": i}, (), self.location).resolve(fontfeatures, font)
+                        GlyphSelector({"unicodeglyph": i}, (), self.location).resolve(fontfeatures, font, mustExist=False)
                         for i in self.selector["unicoderange"]
                     ]
                 )
             )
+            if not returned and mustExist:
+                raise ValueError(
+                    "Font does not contain any glyphs for U+%04X-U+%04X (at %s)"
+                    % (self.selector["unicoderange"][0], self.selector["unicoderange"][-1], self.location)
+                )
         elif "inlineclass" in self.selector:
             returned = list(
                 collapse(
@@ -147,6 +156,29 @@ class ScalarOrVariable:
             assert self.token.type == "VARIABLE"
         else:
             assert isinstance(self.token, (int, float, VariableScalar))
+
+    def resolve_as_bool(self):
+        if isinstance(self.token, VariableScalar):
+            self.token.values[k] = v.resolve_as_integer()
+            return any(bool(x) for x in self.token.values.values())
+        if not isinstance(self.token, lark.Token):
+            return bool(self.token)
+        assert self.token.type == "VARIABLE"
+        name = self.token.value
+
+        if name not in self.parser.variables:
+            raise ValueError("Undefined variable: $%s" % name)
+
+        value = self.parser.variables[name]
+
+        if self.metric:
+            return bool(get_glyph_metrics(self.parser.font, value)[self.metric])
+
+        if isinstance(value, ScalarOrVariable): # Of course variables can also point to variables
+            return value.resolve_as_bool()
+
+        return bool(value)
+
 
     def resolve_as_integer(self):
         if isinstance(self.token, VariableScalar):
@@ -252,7 +284,7 @@ HELPERS="""
     constant_glyphvalue: METRIC "[" BARENAME "]"
     variable_glyphvalue: METRIC "[" glyph_variable "]"
 
-    VARIABLE: "$" STARTGLYPHNAME+
+    VARIABLE: "$" LETTER STARTGLYPHNAME*
     integer_container: integer_constant | VARIABLE | variable_glyphvalue
     integer_constant: constant_glyphvalue | SIGNED_NUMBER
     COMPARATOR: ">=" | "<=" | "==" | "<" | ">"
@@ -398,7 +430,11 @@ class FezParser:
                 continue
             if args[0] == FEZVerb._THUNK:
                 thunk, callback = args
-                rv.extend(callback())
+                returned = callback()
+                if returned:
+                    rv.extend(returned)
+                else:
+                    warnings.warn("Bad callback in verb %s" % verb)
             else:
                 rv.extend(args)
         return rv

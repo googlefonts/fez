@@ -54,7 +54,7 @@ class If(FEZVerb):
 
     def boolean_term(self, args):
         if len(args) == 1:
-            return bool(args[0].resolve_as_integer())
+            return bool(args[0].resolve_as_bool())
         (l, comparator, r) = args
         return compare(l.resolve_as_integer(), comparator, r.resolve_as_integer())
 
