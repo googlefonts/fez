@@ -376,6 +376,7 @@ class BYMoveDots(FEZVerb):
 class BYFixOverhang(FEZVerb):
     def action(self, args):
         overhang_padding, glyphs = args
+        overhang_padding = overhang_padding.resolve_as_integer()
         parser = self.parser
         for c in ["inits", "medis"]:
             if c not in parser.fontfeatures.namedClasses:
