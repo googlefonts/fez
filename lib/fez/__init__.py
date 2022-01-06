@@ -420,7 +420,7 @@ class FezParser:
         ret = [x for x in collapse(results) if x and not isinstance(x, str)]
         return ret
 
-    def expand_statements(self, statements):
+    def expand_statements(self, statements, cannot_fail=True):
         rv = []
         # Gross
         if isinstance(statements, tuple):
@@ -433,7 +433,7 @@ class FezParser:
                 returned = callback()
                 if returned:
                     rv.extend(returned)
-                else:
+                elif cannot_fail:
                     warnings.warn("Bad callback in verb %s" % verb)
             else:
                 rv.extend(args)

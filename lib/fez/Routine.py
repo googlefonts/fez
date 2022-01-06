@@ -92,6 +92,8 @@ FLAGS = {
     "UseMarkFilteringSet": 0x10
 }
 
+ROUTINE_ID = 0
+
 import fontFeatures
 from . import FEZVerb
 
@@ -126,14 +128,20 @@ class Routine(FEZVerb):
 
     def action(self, args):
         (routinename, statements, flags_languages) = args
-        routinename = self.parser.expand_statements(routinename)
+        routinename = self.parser.expand_statements(routinename, cannot_fail=False)
         flags_languages = self.parser.expand_statements(flags_languages)
 
         flags, languages = flags_languages
         statements = self.parser.expand_statements(statements)
 
-        if routinename is not None:
+        if len(routinename) > 0:
             routinename = routinename[0].value
+        elif routinename is not None:
+            global ROUTINE_ID
+            routinename = "FEZUnnamedRoutine{}".format(ROUTINE_ID)
+            ROUTINE_ID += 1
+        else:
+            raise ValueError
 
         if flags is None: flags = []
 
