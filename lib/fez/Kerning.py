@@ -23,6 +23,8 @@ idea of this parameter is to allow you to split your kerning rules by script.
     };
 
 """
+from fontTools.feaLib.variableScalar import VariableScalar
+
 
 from . import FEZVerb
 import fontFeatures
@@ -42,9 +44,14 @@ class Kerning(FEZVerb):
         glyphselector = args and args[0].resolve(self.parser.fontfeatures, self.parser.font)
         rules = []
         kerning = self.parser.font.default_master.kerning
-        # XXX variable
-        for ((l,r),kern) in kerning.items():
-            # extend classes
+        all_keys = [set(m.kerning.keys()) for m in self.parser.font.masters]
+        for (l, r) in sorted(list(set().union(*all_keys))):
+            kern = VariableScalar()
+            kern.axes = self.parser.font.axes
+            for m in self.parser.font.masters:
+                thiskern = m.kerning.get((l, r), 0)
+                kern.add_value(m.location, thiskern)
+
             if l.startswith("@"):
                 if not l[1:] in self.parser.font.features.namedClasses:
                     warnings.warn(f"Left kerning group '{l}' not found")
@@ -59,17 +66,16 @@ class Kerning(FEZVerb):
                 r = self.parser.font.features.namedClasses[r[1:]]
             else:
                 r = [r]
-            # XXX split mark/base?
-            if glyphselector and not any(glyph in glyphselector for glyph in l+r):
-                continue
-            l = [ x for x in l if x in self.parser.font.exportedGlyphs() ]
-            r = [ x for x in r if x in self.parser.font.exportedGlyphs() ]
-            if l and r:
-                rules.append(fontFeatures.Positioning(
-                    [l,r],
-                    [ fontFeatures.ValueRecord(xAdvance=kern), fontFeatures.ValueRecord() ],
-                flags=0x8
-                ))
+
+            l = [ g for g in l if g in self.parser.font.exportedGlyphs()]
+            r = [ g for g in r if g in self.parser.font.exportedGlyphs()]
+            for l1 in l:
+                for r1 in r:
+                    rules.append(fontFeatures.Positioning(
+                        [[l1],[r1]],
+                        [ fontFeatures.ValueRecord(xAdvance=kern), fontFeatures.ValueRecord() ],
+                    flags=0x8
+                    ))
         return rules
 
 
