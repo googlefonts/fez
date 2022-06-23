@@ -56,6 +56,8 @@ GRAMMAR = """
 VERBS = ["Set"]
 
 class Set(FEZVerb):
+    immediate = True
+    
     def __init__(self, parser):
         self.parser = parser
 
