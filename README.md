@@ -79,7 +79,7 @@ feature ss01 {
 } ss01;
 ```
 
-FEZ can do much more; see the [plugins documentation](https://fez.readthedocs.io/en/latest/fez-format.html#standard-plugins). Writing your own plugins is as simple as [defining its grammar, verb, and adding a class with an `action()` method](https://fez.readthedocs.io/en/latest/fez-format.html#writing-your-own-plugins).
+FEZ can do much more; see the [standard verbs documentation](https://fez.readthedocs.io/en/latest/syntax.html#standard-verbs) and the [optional plugins](https://fez.readthedocs.io/en/latest/optionalverbs.html). Writing your own plugins is as simple as [defining its grammar, verb, and adding a class with an `action()` method](https://fez.readthedocs.io/en/latest/plugins.html).
 
 ## Contributors
 
