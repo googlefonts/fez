@@ -42,7 +42,7 @@ a synthetic class) will be unfamiliar. Here's an AFDKO translation::
   @comma = [uni060C uni061B];
 
   feature ss08 {
-    sub @comma -> [uni060C.alt uni061B.alt];
+    sub @comma by [uni060C.alt uni061B.alt];
   } ss08;
 
 

@@ -125,10 +125,10 @@ Writing these features in AFDKO requires us to write out all the possibilities
 by hand::
 
   feature rlig {
-    sub virama-myanmar ka-myanmar -> ka-myanmar.below;
-    sub virama-myanmar kha-myanmar -> kha-myanmar.below;
-    sub virama-myanmar ga-myanmar -> ga-myanmar.below;
-    sub virama-myanmar gha-myanmar -> gha-myanmar.below;
+    sub virama-myanmar ka-myanmar by ka-myanmar.below;
+    sub virama-myanmar kha-myanmar by kha-myanmar.below;
+    sub virama-myanmar ga-myanmar by ga-myanmar.below;
+    sub virama-myanmar gha-myanmar by gha-myanmar.below;
     # ...
   } rlig;
 
