@@ -380,7 +380,7 @@ class BYFixOverhang(FEZVerb):
         parser = self.parser
         for c in ["inits", "medis"]:
             if c not in parser.fontfeatures.namedClasses:
-                raise ValueError("Please define @%s class before calling")
+                raise ValueError("Please define @%s class before calling" % c)
 
         medis = parser.fontfeatures.namedClasses["medis"]
         inits = parser.fontfeatures.namedClasses["inits"]
