@@ -52,6 +52,11 @@ emits appropriate kerning rules to generate the desired separation. e.g.
 between the end of the tail of each glyph in ``@bariye`` and any isolated/final
 glyph preceding the sequence.
 
+``BYFixOverhang`` can also take an optional integer value for the adjustment
+threshold, any adjustments less than the threshold will be dropped. e.g.
+``BYFixOverhang 10 100 @bariye`` will drop any adjustments that are less than
+100 units.
+
 """
 
 
@@ -86,7 +91,7 @@ STRATEGY: "AlwaysDrop" | "TryToFit"
 
 BYFixOverhang_GRAMMAR = """
 ?start: action
-action: integer_container glyphselector
+action: integer_container integer_container? glyphselector
 """
 
 VERBS = ["BYMoveDots", "BYFixOverhang"]
@@ -375,7 +380,12 @@ class BYMoveDots(FEZVerb):
 
 class BYFixOverhang(FEZVerb):
     def action(self, args):
-        overhang_padding, glyphs = args
+        if len(args) == 3:
+            overhang_padding, adjustment_threshold, glyphs = args
+            adjustment_threshold = adjustment_threshold.resolve_as_integer()
+        else:
+            overhang_padding, glyphs = args
+            adjustment_threshold = None
         overhang_padding = overhang_padding.resolve_as_integer()
         parser = self.parser
         for c in ["inits", "medis"]:
@@ -406,6 +416,8 @@ class BYFixOverhang(FEZVerb):
                     continue
 
                 adjustment = overhang - totalwidth + int(overhang_padding)
+                if adjustment_threshold is not None and adjustment < adjustment_threshold:
+                    continue
                 postcontext = [x[0] for x in string[:-1]] + [[yb]]
                 input_ = string[-1]
                 example = [input_[0][0]] + [x[0] for x in postcontext]
