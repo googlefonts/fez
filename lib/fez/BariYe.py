@@ -10,7 +10,7 @@ First, you must define the following glyph classes:
 
 - ``@inits``: all initial forms
 - ``@medis``: all medial forms
-- ``@bari_ye``: all forms of final bari ye or glyphs that you wish to treat
+- ``@bariye``: all forms of final bari ye or glyphs that you wish to treat
   *like* bari ye. For example, final jim and final choti ye may have "bari ye
   like tendencies" in that they have a large negative right sidebearing that
   requires nukta repositioning.
@@ -44,7 +44,7 @@ alif from being "drawn in" to the bari ye.
 ``BYFixOverhang`` takes an integer
 value (an additional number of points to separate the end of the bari ye tail
 and the following glyph), and computes rules which act only on short sequences;
-it evalutes all possible short sequences (using width-binning to keep the number
+it evaluates all possible short sequences (using width-binning to keep the number
 of combinations to a reasonable number), computes the total width of each
 sequence, compares this against the negative RSB of the bari ye, and
 emits appropriate kerning rules to generate the desired separation. e.g.
@@ -380,7 +380,7 @@ class BYFixOverhang(FEZVerb):
         parser = self.parser
         for c in ["inits", "medis"]:
             if c not in parser.fontfeatures.namedClasses:
-                raise ValueError("Please define @%s class before calling")
+                raise ValueError("Please define @%s class before calling" % c)
 
         medis = parser.fontfeatures.namedClasses["medis"]
         inits = parser.fontfeatures.namedClasses["inits"]
