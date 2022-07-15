@@ -30,11 +30,11 @@ parser.add_argument("fee",
 args = parser.parse_args()
 
 font = load(args.font) # XXX master
-if args.font.endswith("tf") and args.load:
-	font = TTFont(args.font)
-	p.fontfeatures = unparse(font)
-
 p = FezParser(font)
+if args.font.endswith("tf") and args.load:
+    with TTFont(args.font) as ttFont:
+        p.fontfeatures = unparse(ttFont)
+
 if args.c:
     if not args.c.endswith(";"): args.c = args.c + ";"
     p.parseString(args.c)
