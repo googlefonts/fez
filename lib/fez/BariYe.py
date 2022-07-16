@@ -57,6 +57,9 @@ threshold, any adjustments less than the threshold will be dropped. e.g.
 ``BYFixOverhang 10 100 @bariye`` will drop any adjustments that are less than
 100 units.
 
+``BYFixOverhang`` can optionally take initials and medials glyph classes
+directly, e.g. ``BYFixOverhang 10 @bariye @medials @initials``.
+
 """
 
 
@@ -91,7 +94,7 @@ STRATEGY: "AlwaysDrop" | "TryToFit"
 
 BYFixOverhang_GRAMMAR = """
 ?start: action
-action: integer_container integer_container? glyphselector
+action: integer_container integer_container? glyphselector (glyphselector glyphselector)?
 """
 
 VERBS = ["BYMoveDots", "BYFixOverhang"]
@@ -380,20 +383,29 @@ class BYMoveDots(FEZVerb):
 
 class BYFixOverhang(FEZVerb):
     def action(self, args):
-        if len(args) == 3:
-            overhang_padding, adjustment_threshold, glyphs = args
-            adjustment_threshold = adjustment_threshold.resolve_as_integer()
-        else:
-            overhang_padding, glyphs = args
-            adjustment_threshold = None
-        overhang_padding = overhang_padding.resolve_as_integer()
         parser = self.parser
-        for c in ["inits", "medis"]:
-            if c not in parser.fontfeatures.namedClasses:
-                raise ValueError("Please define @%s class before calling" % c)
+        adjustment_threshold = None
+        if len(args) > 3:
+            if len(args) == 5:
+                overhang_padding, adjustment_threshold, glyphs, medis, inits = args
+                adjustment_threshold = adjustment_threshold.resolve_as_integer()
+            else:
+                overhang_padding, glyphs, medis, inits = args
+            medis = medis.resolve(parser.fontfeatures, parser.font)
+            inits = inits.resolve(parser.fontfeatures, parser.font)
+        else:
+            if len(args) == 3:
+                overhang_padding, adjustment_threshold, glyphs = args
+                adjustment_threshold = adjustment_threshold.resolve_as_integer()
+            else:
+                overhang_padding, glyphs = args
+            for c in ["inits", "medis"]:
+                if c not in parser.fontfeatures.namedClasses:
+                    raise ValueError("Please define @%s class before calling" % c)
+            medis = parser.fontfeatures.namedClasses["medis"]
+            inits = parser.fontfeatures.namedClasses["inits"]
 
-        medis = parser.fontfeatures.namedClasses["medis"]
-        inits = parser.fontfeatures.namedClasses["inits"]
+        overhang_padding = overhang_padding.resolve_as_integer()
         overhangers = glyphs.resolve(parser.fontfeatures, parser.font)
 
         binned_medis = bin_glyphs_by_metric(parser.font, medis, "run", bincount=8)
