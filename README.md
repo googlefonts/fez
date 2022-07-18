@@ -83,7 +83,7 @@ FEZ can do much more; see the [standard verbs documentation](https://fez.readthe
 
 ## Contributors
 
-See the [CONTRIBUTORS.txt](CONTRIBUTORS.TXT) file for the full list of contributors. Major contributions are described below:
+See the [CONTRIBUTORS.txt](CONTRIBUTORS.txt) file for the full list of contributors. Major contributions are described below:
 
 * FEZ was originally written by Simon Cozens
 * Fred Brennan contributed a new parser and documentation updates
