@@ -44,7 +44,7 @@ PARSEOPTS = dict(use_helpers=True)
 VERBS = ["Feature", "FeatureName"]
 
 from . import FEZVerb
-from fontFeatures import Routine, Rule
+from fontFeatures import Routine, Rule, RoutineReference
 
 class Feature(FEZVerb):
     delayed = True
@@ -74,7 +74,7 @@ class Feature(FEZVerb):
             oddStatements = []
 
         for r in results:
-            if isinstance(r, Routine):
+            if isinstance(r, (Routine, RoutineReference)):
                 wrap_and_flush()
                 self.parser.fontfeatures.addFeature(featurename, [r])
             else:
