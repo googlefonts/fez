@@ -68,7 +68,7 @@ ROUTINENAME: (LETTER|DIGIT|"_")+
 
 Routine_GRAMMAR = """
 ?start: action
-action: ROUTINENAME? "{" statement+ "}" flags languages?
+action: ROUTINENAME? ("{" statement+ "}" flags languages?)?
 """
 
 Routine_beforebrace_GRAMMAR = """
@@ -127,13 +127,17 @@ class Routine(FEZVerb):
             return flag
 
     def action(self, args):
-        (routinename, statements, flags_languages) = args
-        routinename = self.parser.expand_statements(routinename, cannot_fail=False)
-        flags_languages = self.parser.expand_statements(flags_languages)
+        if len(args) == 3:
+            (routinename, statements, flags_languages) = args
+            routinename = self.parser.expand_statements(routinename, cannot_fail=False)
 
-        flags, languages = flags_languages
-        statements = self.parser.expand_statements(statements)
-
+            statements = self.parser.expand_statements(statements)
+            flags_languages = self.parser.expand_statements(flags_languages)
+            flags, languages = flags_languages
+        else:
+            routinename = [args[0]]
+            flags, languages = None, None
+            statements = []
         if len(routinename) > 0:
             routinename = routinename[0].value
         elif routinename is not None:
@@ -147,6 +151,7 @@ class Routine(FEZVerb):
 
         if not statements:
             rr = fontFeatures.RoutineReference(name = routinename)
+            rr.resolve(self.parser.fontfeatures)
             return [rr]
 
         r = fontFeatures.Routine()
