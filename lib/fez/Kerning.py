@@ -51,6 +51,8 @@ class Kerning(FEZVerb):
             for m in self.parser.font.masters:
                 thiskern = m.kerning.get((l, r), 0)
                 kern.add_value(m.location, thiskern)
+            if not kern.does_vary:
+                kern = kern.default
 
             if l.startswith("@"):
                 if not l[1:] in self.parser.font.features.namedClasses:
