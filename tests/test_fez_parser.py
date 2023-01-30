@@ -59,7 +59,7 @@ def test_barename(parser):
 class ClassNameModule:
     GRAMMAR = """
     ?start: action
-    action: CLASSNAME
+    action: classname
     """
 
     VERBS = ["ClassName"]
@@ -74,11 +74,11 @@ def test_classname(parser):
     parser.register_plugin(ClassNameModule, "ClassName")
 
     def test_classname_string(test_bn):
-        s = "ClassName %s;" % test_bn
+        s = "ClassName @%s;" % test_bn
         a = parser.parseString(s)
         assert a == [Token('CLASSNAME', test_bn)]
 
-    test_classname_string("@foo")
+    test_classname_string("foo")
 
 ###############
 # InlineClass #
