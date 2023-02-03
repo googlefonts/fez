@@ -259,3 +259,11 @@ def test_for_loop(parser):
         "lookup Routine_1 { ; sub m by m.sc; sub w by w.sc; } Routine_1; feature rlig { lookup Routine_1; } rlig;"
     )
 
+# issue 14
+
+def test_issue14(parser):
+    s = "DefineClass @consonants = [U+20=>U+21 U+30=>U+31];"
+    parser.parseString(s)
+    assert alltrim(parser.fontfeatures.asFea()) == alltrim(
+        "@consonants = [space exclam zero one];"
+    )

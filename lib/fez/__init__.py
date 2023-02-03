@@ -251,7 +251,7 @@ HELPERS="""
     STARTGLYPHNAME: LETTER | DIGIT | "_"
     MIDGLYPHNAME: STARTGLYPHNAME | "." | "-"
     BARENAME: STARTGLYPHNAME MIDGLYPHNAME*
-    inlineclass: "[" (WS* (classname | BARENAME | REGEX | UNICODEGLYPH))* "]"
+    inlineclass: "[" (WS* (_glyphselector_inner))* "]"
     CLASSNAME: STARTGLYPHNAME+
     _CLASS_SIGIL: "@"
     classname: _CLASS_SIGIL CLASSNAME
@@ -265,7 +265,8 @@ HELPERS="""
 
     SUFFIXTYPE: ("." | "~")
     glyphsuffix: SUFFIXTYPE STARTGLYPHNAME+
-    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | classname | inlineclass | singleglyph) glyphsuffix*
+    _glyphselector_inner: (unicoderange | UNICODEGLYPH | REGEX | classname | inlineclass | singleglyph)
+    glyphselector: _glyphselector_inner glyphsuffix*
     singleglyph: BARENAME | glyph_variable
     glyph_variable: VARIABLE
 
