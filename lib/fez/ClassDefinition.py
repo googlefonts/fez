@@ -182,12 +182,12 @@ conjunction: primary CONJUNCTOR primary
 
 DefineClass_GRAMMAR = """
 ?start: action
-action: CLASSNAME "=" primary
+action: classname "=" primary
 """
 
 DefineClassBinned_GRAMMAR = """
 ?start: action
-action: CLASSNAME "[" METRIC "," NUMBER "]" "=" primary
+action: classname "[" METRIC "," NUMBER "]" "=" primary
 """
 
 PARSEOPTS = dict(use_helpers=True)
@@ -256,7 +256,6 @@ class DefineClass(FEZVerb):
     def action(self, args):
         parser = self.parser
         classname, glyphs = args
-        classname = classname[1:] # -@
 
         self._add_glyphs_to_named_class(glyphs, classname)
 

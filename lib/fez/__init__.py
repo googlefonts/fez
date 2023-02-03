@@ -251,8 +251,10 @@ HELPERS="""
     STARTGLYPHNAME: LETTER | DIGIT | "_"
     MIDGLYPHNAME: STARTGLYPHNAME | "." | "-"
     BARENAME: STARTGLYPHNAME MIDGLYPHNAME*
-    inlineclass: "[" (WS* (CLASSNAME | BARENAME | REGEX | UNICODEGLYPH))* "]"
-    CLASSNAME: "@" STARTGLYPHNAME+
+    inlineclass: "[" (WS* (classname | BARENAME | REGEX | UNICODEGLYPH))* "]"
+    CLASSNAME: STARTGLYPHNAME+
+    _CLASS_SIGIL: "@"
+    classname: _CLASS_SIGIL CLASSNAME
 
     ANYTHING: /[^\\s]/
     REGEX: "/" ANYTHING* "/"
@@ -263,7 +265,7 @@ HELPERS="""
 
     SUFFIXTYPE: ("." | "~")
     glyphsuffix: SUFFIXTYPE STARTGLYPHNAME+
-    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | CLASSNAME | inlineclass | singleglyph) glyphsuffix*
+    glyphselector: (unicoderange | UNICODEGLYPH | REGEX | classname | inlineclass | singleglyph) glyphsuffix*
     singleglyph: BARENAME | glyph_variable
     glyph_variable: VARIABLE
 
@@ -534,6 +536,9 @@ class FEZVerb(lark.Transformer):
     def singleglyph(self, args):
         return args[0]
 
+    def classname(self, args):
+        return args[0]
+
     def integer_constant(self, args):
         return int(args[0])
 
@@ -568,7 +573,7 @@ class FEZVerb(lark.Transformer):
         return ScalarOrVariable(args[0], self.parser)
 
     def unicoderange(self, args):
-        return lark.Token("UNICODERANGE", range(_UNICODEGLYPH(args[0].value), _UNICODEGLYPH(args[1].value)+1), args[0].pos_in_stream)
+        return lark.Token("UNICODERANGE", range(_UNICODEGLYPH(args[0].value), _UNICODEGLYPH(args[1].value)+1))
 
     def inlineclass(self, args):
         return lark.Token("INLINECLASS", [self._glyphselector(t) for t in args if t.type != "WS"])
@@ -576,8 +581,6 @@ class FEZVerb(lark.Transformer):
     def _glyphselector(self, token):
         if isinstance(token, ScalarOrVariable):
             return {"variable": token}
-        if token.type == "CLASSNAME":
-            val = token.value[1:]
         elif token.type == "REGEX":
             val = token.value[1:-1]
         elif token.type == "UNICODEGLYPH":

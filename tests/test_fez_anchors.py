@@ -32,7 +32,7 @@ class TestFezAnchors(unittest.TestCase):
       Anchors acutecomb _top <-570 1290>;
       Anchors tildecomb _top <-542 1256>;
 
-      Feature mark { Attach &top &_top bases; };
+      Feature mark { Attach &top &_top @top bases; };
 """
         )
 

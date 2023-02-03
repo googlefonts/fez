@@ -28,6 +28,10 @@ The ``Attach`` verb takes three parameters: a base anchor name, a mark anchor
 name, and a class filter, which is either ``marks``, ``bases``, ``cursive``
 or a glyph selector.
 
+It also optionally takes a mark class name:
+
+      Feature mark { Attach &top &_top @topmarks bases; };
+
 The verb acts by collecting all the glyphs which have anchors defined, and
 filtering them according to their class definition in the ``GDEF`` table.
 In this case, we have asked for ``bases``, so glyph ``A`` will be selected.
@@ -76,7 +80,8 @@ anchor: BARENAME "<" valuerecord_number valuerecord_number ">"
 
 Attach_GRAMMAR = """
 ?start: action
-action: "&" BARENAME "&" BARENAME (ATTACHTYPE | glyphselector) maybe_languages
+action: "&" BARENAME "&" BARENAME maybe_classname (ATTACHTYPE | glyphselector) maybe_languages
+maybe_classname: classname?
 maybe_languages: languages?
 ATTACHTYPE: "marks" | "bases" | "cursive"
 """
@@ -149,7 +154,7 @@ class LoadAnchors(FEZVerb):
 
 class Attach(FEZVerb):
     def action(self, args):
-        (aFrom, aTo, attachtype, languages) = args
+        (aFrom, aTo, markClass, attachtype, languages) = args
 
         bases = {}
         marks = {}
@@ -195,11 +200,14 @@ class Attach(FEZVerb):
         return [
             fontFeatures.Routine(
                 rules=[
-                    fontFeatures.Attachment(aFrom, aTo, bases, marks, font=self.parser.font)
+                    fontFeatures.Attachment(aFrom, aTo, markClass, bases, marks, font=self.parser.font)
                 ],
                 languages = languages
             )
         ]
+
+    def maybe_classname(self, args):
+        return args[0] if len(args) else ''
 
     def languages(self, args):
         rv = []
