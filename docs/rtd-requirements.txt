@@ -3,5 +3,5 @@ fontTools
 beziers>=0.1.0
 lark
 more_itertools
-git+git://github.com/simoncozens/babelfont.git@nfsf#egg=babelfont
+babelfont>=3.0.0
 fontfeatures>=1.0.7
