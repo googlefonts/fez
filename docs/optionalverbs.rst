@@ -13,6 +13,7 @@ add verbs to the language.
 .. automodule:: fez.Arabic
 .. automodule:: fez.BariYe
 .. automodule:: fez.FontEngineering
+.. automodule:: fez.Fractions
 .. automodule:: fez.IMatra
 .. automodule:: fez.KernToDistance
 .. automodule:: fez.LigatureFinder
